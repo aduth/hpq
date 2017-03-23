@@ -1,11 +1,5 @@
 // Fake DOM
-global.document = require( 'jsdom' ).jsdom( '', {
-	features: {
-		FetchExternalResources: false,
-		ProcessExternalResources: false,
-		SkipExternalResources: true
-	}
-} );
+global.document = require( 'jsdom' ).jsdom( '' );
 global.window = document.defaultView;
 global.navigator = window.navigator;
 
