@@ -42,23 +42,24 @@ function parse(source, matchers) {
 }
 
 /**
- * Generates a function which matches and returns the first node of type
- * selector in the element, or the query element itself if no selector is
- * passed.
+ * Generates a function which matches node of type selector, returning an
+ * attribute by property if the attribute exists. If no selector is passed,
+ * returns property of the query element.
  *
- * @private This method is for internal use by attr() and prop(). Intended
- *          element retrieval is through those methods.
- *
- * @param  {?string}  selector Optional selector
- * @return {?Element}          Found element
+ * @param  {?string} selector Optional selector
+ * @param  {string}  name     Property name
+ * @return {*}                Property value
  */
-function find(selector) {
+function prop(selector, name) {
   return function (node) {
-    if (!selector) {
-      return node;
+    var match = node;
+    if (selector) {
+      match = node.querySelector(selector);
     }
 
-    return node.querySelector(selector);
+    if (match) {
+      return match[name];
+    }
   };
 }
 
@@ -73,27 +74,9 @@ function find(selector) {
  */
 function attr(selector, name) {
   return function (node) {
-    var match = find(selector)(node);
-    if (match && match.hasAttribute(name)) {
-      return match.getAttribute(name);
-    }
-  };
-}
-
-/**
- * Generates a function which matches node of type selector, returning an
- * attribute by property if the attribute exists. If no selector is passed,
- * returns property of the query element.
- *
- * @param  {?string} selector Optional selector
- * @param  {string}  name     Property name
- * @return {*}                Property value
- */
-function prop(selector, name) {
-  return function (node) {
-    var match = find(selector)(node);
-    if (match) {
-      return match[name];
+    var attributes = prop(selector, 'attributes')(node);
+    if (attributes && attributes.hasOwnProperty(name)) {
+      return attributes[name].value;
     }
   };
 }
@@ -143,9 +126,8 @@ function query(selector, matchers) {
 }
 
 exports.parse = parse;
-exports.find = find;
-exports.attr = attr;
 exports.prop = prop;
+exports.attr = attr;
 exports.html = html;
 exports.text = text;
 exports.query = query;

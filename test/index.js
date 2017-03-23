@@ -11,7 +11,7 @@ global.navigator = window.navigator;
 
 // Dependencies
 const { expect } = require( 'chai' );
-const { parse, find, attr, prop, html, text, query } = require( '../dist/hpq' );
+const { parse, attr, prop, html, text, query } = require( '../dist/hpq' );
 
 describe( 'hpq', () => {
 	// Markup
@@ -58,23 +58,29 @@ describe( 'hpq', () => {
 		} );
 	} );
 
-	describe( 'find()', () => {
+	describe( 'prop()', () => {
 		it( 'should return a matcher function', () => {
-			const matcher = find();
+			const matcher = prop();
 
 			expect( matcher ).to.be.a( 'function' );
 		} );
 
-		it( 'should return the element itself if no selector', () => {
-			const result = parse( element, find() );
+		it( 'should return property of current top node if no selector', () => {
+			const result = parse( element, prop( undefined, 'nodeName' ) );
 
-			expect( result ).to.equal( element );
+			expect( result ).to.equal( 'BLOCKQUOTE' );
 		} );
 
-		it( 'should return the first match', () => {
-			const result = parse( element, find( 'p' ) );
+		it( 'should return undefined if selector does not match', () => {
+			const result = parse( element, prop( 'strong', 'nodeName' ) );
 
-			expect( result ).to.equal( element.firstChild );
+			expect( result ).to.be.undefined;
+		} );
+
+		it( 'should return property of selector match by property', () => {
+			const result = parse( element, prop( 'cite', 'nodeName' ) );
+
+			expect( result ).to.equal( 'CITE' );
 		} );
 	} );
 
@@ -107,32 +113,6 @@ describe( 'hpq', () => {
 			const result = parse( element, attr( 'cite', 'class' ) );
 
 			expect( result ).to.equal( 'large' );
-		} );
-	} );
-
-	describe( 'prop()', () => {
-		it( 'should return a matcher function', () => {
-			const matcher = prop();
-
-			expect( matcher ).to.be.a( 'function' );
-		} );
-
-		it( 'should return property of current top node if no selector', () => {
-			const result = parse( element, prop( undefined, 'nodeName' ) );
-
-			expect( result ).to.equal( 'BLOCKQUOTE' );
-		} );
-
-		it( 'should return undefined if selector does not match', () => {
-			const result = parse( element, prop( 'strong', 'nodeName' ) );
-
-			expect( result ).to.be.undefined;
-		} );
-
-		it( 'should return property of selector match by property', () => {
-			const result = parse( element, prop( 'cite', 'nodeName' ) );
-
-			expect( result ).to.equal( 'CITE' );
 		} );
 	} );
 
