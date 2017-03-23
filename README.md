@@ -1,6 +1,6 @@
 # hpq
 
-A utility to parse and query HTML into an object shape.
+A utility to parse and query HTML into an object shape. Heavily inspired by [gdom](https://github.com/syrusakbary/gdom).
 
 ## Example
 
@@ -23,11 +23,43 @@ hpq.parse( '<blockquote><p>...</p><p>...</p><cite>Andrew</cite></blockquote>', {
 
 ## Getting Started
 
-_WIP_
+Download the generated script file from [`dist/hpq.js`](./dist/hpq.jq) or install via NPM if you have a front-end build process:
+
+```
+npm install hpq
+```
+
+`hpq` assumes that it's being run in a browser environment. If you need to simulate this in Node, consider [jsdom](https://www.npmjs.com/package/jsdom).
+
+## Usage
+
+Pass a markup string or DOM element to the top-level `parse` function, along with the object shape you'd like to match. Keys of the matcher object will align with the returned object shape, where values are matcher functions; one of the many included matchers or your own accepting the node under test.
 
 ## API
 
-_WIP_
+`parse( source: string | Element, matchers: Object | Function ): Object | mixed`
+
+Given a markup string or DOM element, creates an object aligning with the shape of the matchers object, or the value returned by the matcher.
+
+`attr( selector: string, name: string ): Function`
+
+Generates a function which matches node of type selector, returning an attribute by name if the attribute exists.
+
+`prop( selector: string, name: string ): Function`
+
+Generates a function which matches node of type selector, returning an attribute by property if the attribute exists.
+
+`html( selector: ?string ): Function`
+
+Convenience for `prop( selector, 'innerHTML' )` .
+
+`text( selector: ?string ): Function`
+
+Convenience for `prop( selector, 'textContent' )` .
+
+`query( selector: string, matchers: Object | Function )`
+
+Creates a new matching context by first finding elements matching selector using [`querySelectorAll`](https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelectorAll) before then running another `parse` on `matchers` scoped to the matched elements.
 
 ## License
 
