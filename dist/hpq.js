@@ -46,6 +46,9 @@ function parse(source, matchers) {
  * selector in the element, or the query element itself if no selector is
  * passed.
  *
+ * @private This method is for internal use by attr() and prop(). Intended
+ *          element retrieval is through those methods.
+ *
  * @param  {?string}  selector Optional selector
  * @return {?Element}          Found element
  */

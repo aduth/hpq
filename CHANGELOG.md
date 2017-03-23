@@ -1,7 +1,6 @@
-# 1.1.0 (TBD)
+# 1.0.2 (TBD)
 
-- New: `find` matcher
-- New: Minified distributable
+- General: Include minified distributable
 - General: Added unit tests
 
 # 1.0.1 (2017-03-23)

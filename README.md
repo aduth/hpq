@@ -41,10 +41,6 @@ Pass a markup string or DOM element to the top-level `parse` function, along wit
 
 Given a markup string or DOM element, creates an object aligning with the shape of the matchers object, or the value returned by the matcher.
 
-`find( selector: ?string ): Function`
-
-Generates a function which matches and returns the first node of type selector in the element, or the query element itself if no selector is passed.
-
 `attr( selector: ?string, name: string ): Function`
 
 Generates a function which matches node of type selector, returning an attribute by name if the attribute exists. If no selector is passed, returns attribute of the query element.
