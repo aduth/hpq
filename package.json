@@ -10,7 +10,7 @@
     "type": "git",
     "url": "https://github.com/aduth/hpq.git"
   },
-  "main": "dist/index.js",
+  "main": "dist/hpq.js",
   "module": "src/index.js",
   "files": [
     "dist/hpq.js",
