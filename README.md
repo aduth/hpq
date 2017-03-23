@@ -41,13 +41,13 @@ Pass a markup string or DOM element to the top-level `parse` function, along wit
 
 Given a markup string or DOM element, creates an object aligning with the shape of the matchers object, or the value returned by the matcher.
 
-`attr( selector: string, name: string ): Function`
+`attr( selector: ?string, name: string ): Function`
 
-Generates a function which matches node of type selector, returning an attribute by name if the attribute exists.
+Generates a function which matches node of type selector, returning an attribute by name if the attribute exists. If no selector is passed, returns attribute of the query element.
 
-`prop( selector: string, name: string ): Function`
+`prop( selector: ?string, name: string ): Function`
 
-Generates a function which matches node of type selector, returning an attribute by property if the attribute exists.
+Generates a function which matches node of type selector, returning an attribute by property if the attribute exists. If no selector is passed, returns property of the query element.
 
 `html( selector: ?string ): Function`
 
