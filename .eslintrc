@@ -2,6 +2,11 @@
 	"root": true,
 	"extends": "wpcalypso",
 	"env": {
-		"browser": true
+		"browser": true,
+		"node": true,
+		"mocha": true
+	},
+	"rules": {
+		"max-len": [ "error", { "code": 120 } ]
 	}
 }

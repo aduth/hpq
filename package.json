@@ -18,7 +18,9 @@
   ],
   "scripts": {
     "build": "rollup -c",
-    "dev": "rollup -c -w"
+    "dev": "rollup -c -w",
+    "pretest": "npm run build",
+    "test": "mocha"
   },
   "author": {
     "name": "Andrew Duthie",
@@ -29,9 +31,12 @@
   "devDependencies": {
     "babel": "^6.23.0",
     "babel-preset-latest": "^6.24.0",
+    "chai": "^3.5.0",
     "eslint": "^3.18.0",
     "eslint-config-wpcalypso": "^0.7.1",
     "eslint-plugin-wpcalypso": "^3.0.2",
+    "jsdom": "^9.12.0",
+    "mocha": "^3.2.0",
     "rollup": "^0.41.6",
     "rollup-plugin-babel": "^2.7.1",
     "rollup-watch": "^3.2.2"
