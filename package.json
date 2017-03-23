@@ -19,7 +19,7 @@
   "scripts": {
     "build": "rollem",
     "dev": "rollem -w",
-    "lint": "eslint src",
+    "lint": "eslint . --ignore-pattern dist",
     "pretest": "npm run build",
     "test": "mocha && npm run lint",
     "prepublishOnly": "npm run build"
