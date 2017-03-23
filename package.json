@@ -1,0 +1,31 @@
+{
+  "name": "hpq",
+  "version": "1.0.0",
+  "description": "Utility to parse and query HTML into an object shape",
+  "main": "dist/index.js",
+  "module": "src/index.js",
+  "files": [
+    "dist/hpq.js",
+    "src/index.js"
+  ],
+  "scripts": {
+    "build": "rollup -c",
+    "dev": "rollup -c -w"
+  },
+  "author": {
+    "name": "Andrew Duthie",
+    "email": "andrew@andrewduthie.com",
+    "url": "http://andrewduthie.com"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "babel": "^6.23.0",
+    "babel-preset-latest": "^6.24.0",
+    "eslint": "^3.18.0",
+    "eslint-config-wpcalypso": "^0.7.1",
+    "eslint-plugin-wpcalypso": "^3.0.2",
+    "rollup": "^0.41.6",
+    "rollup-plugin-babel": "^2.7.1",
+    "rollup-watch": "^3.2.2"
+  }
+}
