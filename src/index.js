@@ -34,11 +34,9 @@ export function attr( selector, name ) {
 
 export function prop( selector, name ) {
 	return function( node ) {
-		let match;
+		let match = node;
 		if ( selector ) {
-			match = node.querySelector( selector );
-		} else {
-			match = node;
+			match = match.querySelector( selector );
 		}
 
 		if ( match ) {

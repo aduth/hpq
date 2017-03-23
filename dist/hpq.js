@@ -40,11 +40,9 @@ function attr(selector, name) {
 
 function prop(selector, name) {
 	return function (node) {
-		var match = void 0;
+		var match = node;
 		if (selector) {
-			match = node.querySelector(selector);
-		} else {
-			match = node;
+			match = match.querySelector(selector);
 		}
 
 		if (match) {
