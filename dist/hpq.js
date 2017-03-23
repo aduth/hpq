@@ -103,7 +103,6 @@ function prop(selector, name) {
  * @param  {?string} selector Optional selector
  * @return {string}           Inner HTML
  */
-
 function html(selector) {
   return prop(selector, 'innerHTML');
 }

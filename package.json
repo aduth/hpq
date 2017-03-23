@@ -17,8 +17,8 @@
     "src/index.js"
   ],
   "scripts": {
-    "build": "rollup -c",
-    "dev": "rollup -c -w",
+    "build": "rollem",
+    "dev": "rollem -w",
     "lint": "eslint src",
     "pretest": "npm run build",
     "test": "mocha && npm run lint"
@@ -38,8 +38,9 @@
     "eslint-plugin-wpcalypso": "^3.0.2",
     "jsdom": "^9.12.0",
     "mocha": "^3.2.0",
-    "rollup": "^0.41.6",
+    "rollem": "^1.11.0",
     "rollup-plugin-babel": "^2.7.1",
+    "rollup-plugin-uglify": "^1.0.1",
     "rollup-watch": "^3.2.2"
   }
 }
