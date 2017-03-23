@@ -11,14 +11,14 @@ hpq.parse( '<figure><img src="img.png" alt="Image"><figcaption>An Image</figcapt
 	caption: hpq.text( 'figcaption' )
 } );
 
-// { text: [ "...", "..." ], cite: "Andrew" }
+// { src: "img.png", alt: "Image", caption: "An Image" }
 
 hpq.parse( '<blockquote><p>...</p><p>...</p><cite>Andrew</cite></blockquote>', {
 	text: hpq.query( 'p', hpq.text() ),
 	cite: hpq.text( 'cite' )
 } );
 
-// { src: "img.png", alt: "Image", caption: "An Image" }
+// { text: [ "...", "..." ], cite: "Andrew" }
 ```
 
 ## Getting Started
