@@ -23,13 +23,19 @@ export function parse( source, matchers ) {
 	}, {} );
 }
 
-export function attr( selector, name ) {
+export function find( selector ) {
 	return function( node ) {
-		let match = node;
-		if ( selector ) {
-			match = match.querySelector( selector );
+		if ( ! selector ) {
+			return node;
 		}
 
+		return node.querySelector( selector );
+	};
+}
+
+export function attr( selector, name ) {
+	return function( node ) {
+		const match = find( selector )( node );
 		if ( match && match.hasAttribute( name ) ) {
 			return match.getAttribute( name );
 		}
@@ -38,11 +44,7 @@ export function attr( selector, name ) {
 
 export function prop( selector, name ) {
 	return function( node ) {
-		let match = node;
-		if ( selector ) {
-			match = match.querySelector( selector );
-		}
-
+		const match = find( selector )( node );
 		if ( match ) {
 			return match[ name ];
 		}

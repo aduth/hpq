@@ -29,13 +29,19 @@ function parse(source, matchers) {
 	}, {});
 }
 
-function attr(selector, name) {
+function find(selector) {
 	return function (node) {
-		var match = node;
-		if (selector) {
-			match = match.querySelector(selector);
+		if (!selector) {
+			return node;
 		}
 
+		return node.querySelector(selector);
+	};
+}
+
+function attr(selector, name) {
+	return function (node) {
+		var match = find(selector)(node);
 		if (match && match.hasAttribute(name)) {
 			return match.getAttribute(name);
 		}
@@ -44,11 +50,7 @@ function attr(selector, name) {
 
 function prop(selector, name) {
 	return function (node) {
-		var match = node;
-		if (selector) {
-			match = match.querySelector(selector);
-		}
-
+		var match = find(selector)(node);
 		if (match) {
 			return match[name];
 		}
@@ -73,6 +75,7 @@ function query(selector, matchers) {
 }
 
 exports.parse = parse;
+exports.find = find;
 exports.attr = attr;
 exports.prop = prop;
 exports.html = html;

@@ -11,7 +11,7 @@ global.navigator = window.navigator;
 
 // Dependencies
 const { expect } = require( 'chai' );
-const { parse, attr, prop, html, text, query } = require( '../dist/hpq' );
+const { parse, find, attr, prop, html, text, query } = require( '../dist/hpq' );
 
 describe( 'hpq', () => {
 	// Markup
@@ -55,6 +55,26 @@ describe( 'hpq', () => {
 			expect( result ).to.eql( {
 				author: '— Andrew'
 			} );
+		} );
+	} );
+
+	describe( 'find()', () => {
+		it( 'should return a matcher function', () => {
+			const matcher = find();
+
+			expect( matcher ).to.be.a( 'function' );
+		} );
+
+		it( 'should return the element itself if no selector', () => {
+			const result = parse( element, find() );
+
+			expect( result ).to.equal( element );
+		} );
+
+		it( 'should return the first match', () => {
+			const result = parse( element, find( 'p' ) );
+
+			expect( result ).to.equal( element.firstChild );
 		} );
 	} );
 
