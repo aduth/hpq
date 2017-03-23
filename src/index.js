@@ -45,6 +45,11 @@ export function parse( source, matchers ) {
  * @return {*}                Property value
  */
 export function prop( selector, name ) {
+	if ( 1 === arguments.length ) {
+		name = selector;
+		selector = undefined;
+	}
+
 	return function( node ) {
 		let match = node;
 		if ( selector ) {
@@ -67,6 +72,11 @@ export function prop( selector, name ) {
  * @return {?string}          Attribute value
  */
 export function attr( selector, name ) {
+	if ( 1 === arguments.length ) {
+		name = selector;
+		selector = undefined;
+	}
+
 	return function( node ) {
 		const attributes = prop( selector, 'attributes' )( node );
 		if ( attributes && attributes.hasOwnProperty( name ) ) {

@@ -13,32 +13,32 @@
  * @return {(Object|*)}                 Matched value(s), shaped by object
  */
 function parse(source, matchers) {
-  if (!matchers) {
-    return;
-  }
+	if (!matchers) {
+		return;
+	}
 
-  // Coerce to element
-  if ('string' === typeof source) {
-    var doc = document.implementation.createHTMLDocument('');
-    doc.body.innerHTML = source;
-    source = doc.body;
-  }
+	// Coerce to element
+	if ('string' === typeof source) {
+		var doc = document.implementation.createHTMLDocument('');
+		doc.body.innerHTML = source;
+		source = doc.body;
+	}
 
-  // Return singular value
-  if ('function' === typeof matchers) {
-    return matchers(source);
-  }
+	// Return singular value
+	if ('function' === typeof matchers) {
+		return matchers(source);
+	}
 
-  // Bail if we can't handle matchers
-  if (Object !== matchers.constructor) {
-    return;
-  }
+	// Bail if we can't handle matchers
+	if (Object !== matchers.constructor) {
+		return;
+	}
 
-  // Shape result by matcher object
-  return Object.keys(matchers).reduce(function (memo, key) {
-    memo[key] = parse(source, matchers[key]);
-    return memo;
-  }, {});
+	// Shape result by matcher object
+	return Object.keys(matchers).reduce(function (memo, key) {
+		memo[key] = parse(source, matchers[key]);
+		return memo;
+	}, {});
 }
 
 /**
@@ -51,16 +51,21 @@ function parse(source, matchers) {
  * @return {*}                Property value
  */
 function prop(selector, name) {
-  return function (node) {
-    var match = node;
-    if (selector) {
-      match = node.querySelector(selector);
-    }
+	if (1 === arguments.length) {
+		name = selector;
+		selector = undefined;
+	}
 
-    if (match) {
-      return match[name];
-    }
-  };
+	return function (node) {
+		var match = node;
+		if (selector) {
+			match = node.querySelector(selector);
+		}
+
+		if (match) {
+			return match[name];
+		}
+	};
 }
 
 /**
@@ -73,12 +78,17 @@ function prop(selector, name) {
  * @return {?string}          Attribute value
  */
 function attr(selector, name) {
-  return function (node) {
-    var attributes = prop(selector, 'attributes')(node);
-    if (attributes && attributes.hasOwnProperty(name)) {
-      return attributes[name].value;
-    }
-  };
+	if (1 === arguments.length) {
+		name = selector;
+		selector = undefined;
+	}
+
+	return function (node) {
+		var attributes = prop(selector, 'attributes')(node);
+		if (attributes && attributes.hasOwnProperty(name)) {
+			return attributes[name].value;
+		}
+	};
 }
 
 /**
@@ -90,7 +100,7 @@ function attr(selector, name) {
  * @return {string}           Inner HTML
  */
 function html(selector) {
-  return prop(selector, 'innerHTML');
+	return prop(selector, 'innerHTML');
 }
 
 /**
@@ -102,7 +112,7 @@ function html(selector) {
  * @return {string}           Text content
  */
 function text(selector) {
-  return prop(selector, 'textContent');
+	return prop(selector, 'textContent');
 }
 
 /**
@@ -117,12 +127,12 @@ function text(selector) {
  * @return {Array.<*,Object>}           Array of matched value(s)
  */
 function query(selector, matchers) {
-  return function (node) {
-    var matches = node.querySelectorAll(selector);
-    return [].map.call(matches, function (match) {
-      return parse(match, matchers);
-    });
-  };
+	return function (node) {
+		var matches = node.querySelectorAll(selector);
+		return [].map.call(matches, function (match) {
+			return parse(match, matchers);
+		});
+	};
 }
 
 exports.parse = parse;

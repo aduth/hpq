@@ -65,8 +65,14 @@ describe( 'hpq', () => {
 			expect( matcher ).to.be.a( 'function' );
 		} );
 
-		it( 'should return property of current top node if no selector', () => {
+		it( 'should return property of current top node if undefined selector', () => {
 			const result = parse( element, prop( undefined, 'nodeName' ) );
+
+			expect( result ).to.equal( 'BLOCKQUOTE' );
+		} );
+
+		it( 'should return property of current top node if omitted selector', () => {
+			const result = parse( element, prop( 'nodeName' ) );
 
 			expect( result ).to.equal( 'BLOCKQUOTE' );
 		} );
@@ -91,8 +97,14 @@ describe( 'hpq', () => {
 			expect( matcher ).to.be.a( 'function' );
 		} );
 
-		it( 'should return attribute of current top node if no selector', () => {
+		it( 'should return attribute of current top node if undefined selector', () => {
 			const result = parse( element, query( 'cite', attr( undefined, 'class' ) ) );
+
+			expect( result ).to.eql( [ 'large' ] );
+		} );
+
+		it( 'should return attribute of current top node if omitted selector', () => {
+			const result = parse( element, query( 'cite', attr( 'class' ) ) );
 
 			expect( result ).to.eql( [ 'large' ] );
 		} );
