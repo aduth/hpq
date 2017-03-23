@@ -2,6 +2,14 @@
   "name": "hpq",
   "version": "1.0.0",
   "description": "Utility to parse and query HTML into an object shape",
+  "homepage": "https://github.com/aduth/hpq",
+  "bugs": {
+    "url": "https://github.com/aduth/hpq/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aduth/hpq.git"
+  },
   "main": "dist/index.js",
   "module": "src/index.js",
   "files": [
