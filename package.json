@@ -19,8 +19,9 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
+    "lint": "eslint src",
     "pretest": "npm run build",
-    "test": "mocha"
+    "test": "mocha && npm run lint"
   },
   "author": {
     "name": "Andrew Duthie",
