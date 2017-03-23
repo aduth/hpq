@@ -31,7 +31,11 @@ function parse(source, matchers) {
 
 function attr(selector, name) {
 	return function (node) {
-		var match = node.querySelector(selector);
+		var match = node;
+		if (selector) {
+			match = match.querySelector(selector);
+		}
+
 		if (match && match.hasAttribute(name)) {
 			return match.getAttribute(name);
 		}

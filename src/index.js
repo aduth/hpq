@@ -25,7 +25,11 @@ export function parse( source, matchers ) {
 
 export function attr( selector, name ) {
 	return function( node ) {
-		const match = node.querySelector( selector );
+		let match = node;
+		if ( selector ) {
+			match = match.querySelector( selector );
+		}
+
 		if ( match && match.hasAttribute( name ) ) {
 			return match.getAttribute( name );
 		}

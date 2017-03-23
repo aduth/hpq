@@ -65,6 +65,12 @@ describe( 'hpq', () => {
 			expect( matcher ).to.be.a( 'function' );
 		} );
 
+		it( 'should return attribute of current top node if no selector', () => {
+			const result = parse( element, query( 'cite', attr( undefined, 'class' ) ) );
+
+			expect( result ).to.eql( [ 'large' ] );
+		} );
+
 		it( 'should return undefined if selector does not match', () => {
 			const result = parse( element, attr( 'strong', 'class' ) );
 
