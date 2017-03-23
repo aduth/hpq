@@ -21,7 +21,8 @@
     "dev": "rollem -w",
     "lint": "eslint src",
     "pretest": "npm run build",
-    "test": "mocha && npm run lint"
+    "test": "mocha && npm run lint",
+    "prepublishOnly": "npm run build"
   },
   "author": {
     "name": "Andrew Duthie",
