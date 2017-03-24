@@ -1,4 +1,4 @@
-# 1.1.1 (TBD)
+# 1.1.1 (2017-03-24)
 
 - Fix: `package.module` is now transpiled except ES2015 modules
 

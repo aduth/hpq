@@ -1,6 +1,6 @@
 {
   "name": "hpq",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Utility to parse and query HTML into an object shape",
   "homepage": "https://github.com/aduth/hpq",
   "bugs": {
