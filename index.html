@@ -85,7 +85,7 @@ function calculateResult() {
 	eval.apply( window, [ 'currentQuery = ' + query ] );
 
 	value = window.hpq.parse( markup, window.currentQuery );
-	value = JSON.stringify( value, null, 4 );
+	value = JSON.stringify( value, null, 2 );
 
 	editors.result.setValue( value );
 }
