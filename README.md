@@ -2,6 +2,8 @@
 
 A utility to parse and query HTML into an object shape. Heavily inspired by [gdom](https://github.com/syrusakbary/gdom).
 
+[![Build Status](https://travis-ci.org/aduth/hpq.svg?branch=master)](https://travis-ci.org/aduth/hpq)
+
 ## Example
 
 ```js
