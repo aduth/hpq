@@ -115,10 +115,14 @@ function calculateResult() {
 		query = editors.query.getValue(),
 		value;
 
-	eval.call( window, 'currentQuery = ' + query );
+	try {
+		eval.call( window, 'currentQuery = ' + query );
 
-	value = window.hpq.parse( markup, window.currentQuery );
-	value = JSON.stringify( value, null, 2 );
+		value = window.hpq.parse( markup, window.currentQuery );
+		value = JSON.stringify( value, null, 2 );
+	} catch ( ex ) {
+		value = 'Invalid query\n\t' + ex.message;
+	}
 
 	editors.result.setValue( value );
 }
