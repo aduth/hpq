@@ -120,7 +120,8 @@ function calculateResult() {
 
 	editor = window.CodeMirror.fromTextArea( node, {
 		mode: mode,
-		lineWrapping: true
+		lineWrapping: true,
+		readOnly: node.hasAttribute( 'readonly' )
 	} );
 
 	editor.setSize( '100%', '100%' );
