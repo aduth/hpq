@@ -1,3 +1,7 @@
+# 1.1.1 (TBD)
+
+- Fix: `package.module` is now transpiled except ES2015 modules
+
 # 1.1.0 (2017-03-23)
 
 - New: Optional selector argument to attr, prop can be omitted. Optional initial arguments are an awkward syntax supported here for convenience's sake. This feature may be removed, or arguments reversed, in future major versions.
