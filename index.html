@@ -1,0 +1,113 @@
+<!doctype html>
+<title>hpq Explorer</title>
+<style>
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	padding: 10px;
+	background: #F1EADA;
+}
+
+html,
+body,
+.columns,
+.columns > div {
+	height: 100%;
+}
+
+.columns > div,
+.rows > div {
+	position: relative;
+	padding: 10px;
+}
+
+.columns > div {
+	float: left;
+	width: 50%;
+}
+
+.rows > div {
+	height: 50%;
+	padding: 10px 0;
+}
+
+.rows > div:first-child {
+	padding-top: 0;
+}
+
+.rows > div:last-child {
+	padding-bottom: 0;
+}
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/codemirror.css" integrity="sha256-7sZe9dsqyNZC9Mk+WPRB7nVvPPPXyorzm2QKqlgXC4k=" crossorigin="anonymous">
+<div class="columns">
+	<div>
+		<textarea id="html"><blockquote>
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque tincidunt est nec eros semper varius. Maecenas pharetra eleifend nisl, quis dignissim neque eleifend in. Nulla consectetur scelerisque elit ac placerat. Proin accumsan condimentum sollicitudin. Aliquam facilisis massa sed ullamcorper feugiat.</p>
+  <p>Vestibulum vel tellus non quam bibendum blandit at et arcu. Etiam pretium blandit feugiat. Donec at volutpat nunc. Nam sed pretium lacus. Vestibulum consectetur auctor lobortis. Sed at dignissim nisl. Pellentesque odio nisi, egestas ac fermentum vitae, mollis feugiat mauris. Sed dignissim non arcu in tempus. Curabitur viverra odio eget elit molestie, non euismod velit volutpat.</p>
+  <cite>Andrew Duthie</cite>
+</blockquote></textarea>
+	</div>
+	<div class="rows">
+		<div>
+			<textarea id="query" data-mode="javascript">{
+  text: query( 'p', text() ),
+  cite: text( 'cite' )
+}</textarea>
+		</div>
+		<div>
+			<textarea id="result" readonly></textarea>
+		</div>
+	</div>
+</div>
+<script src="https://cdn.rawgit.com/aduth/hpq/master/dist/hpq.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/codemirror.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/mode/xml/xml.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/mode/css/css.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/mode/htmlmixed/htmlmixed.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/mode/javascript/javascript.js"></script>
+<script>
+var editors = {},
+	fn;
+
+for ( fn in window.hpq ) {
+	window[ fn ] = window.hpq[ fn ];
+}
+
+function calculateResult() {
+	var markup = editors.html.getValue(),
+		query = editors.query.getValue(),
+		value;
+
+	eval.apply( window, [ 'currentQuery = ' + query ] );
+
+	value = window.hpq.parse( markup, window.currentQuery );
+	value = JSON.stringify( value, null, 4 );
+
+	editors.result.setValue( value );
+}
+
+[ 'html', 'query', 'result' ].forEach( function( id ) {
+	var node = document.getElementById( id ),
+		mode = node.getAttribute( 'data-mode' ) || 'htmlmixed',
+		editor;
+
+	editor = window.CodeMirror.fromTextArea( node, {
+		mode: mode,
+		lineWrapping: true
+	} );
+
+	editor.setSize( '100%', '100%' );
+
+	if ( 'result' !== id ) {
+		editor.on( 'change', calculateResult );
+	}
+
+	editors[ id ] = editor;
+} );
+
+calculateResult();
+</script>
