@@ -82,7 +82,7 @@ function calculateResult() {
 		query = editors.query.getValue(),
 		value;
 
-	eval.apply( window, [ 'currentQuery = ' + query ] );
+	eval.call( window, 'currentQuery = ' + query );
 
 	value = window.hpq.parse( markup, window.currentQuery );
 	value = JSON.stringify( value, null, 2 );
