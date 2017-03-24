@@ -7,8 +7,16 @@
 
 body {
 	margin: 0;
-	padding: 10px;
+	padding: 20px;
 	background: #F1EADA;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+}
+
+h2 {
+	position: absolute;
+	top: 0;
+	font-size: 1em;
+	margin: 0;
 }
 
 html,
@@ -18,7 +26,10 @@ body,
 	height: 100%;
 }
 
-.columns > div,
+.columns > div {
+	padding: 0 10px;
+}
+
 .rows > div {
 	position: relative;
 	padding: 10px;
@@ -41,10 +52,16 @@ body,
 .rows > div:last-child {
 	padding-bottom: 0;
 }
+
+.panel {
+	position: relative;
+	padding-top: 30px !important;
+}
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/codemirror.css" integrity="sha256-7sZe9dsqyNZC9Mk+WPRB7nVvPPPXyorzm2QKqlgXC4k=" crossorigin="anonymous">
 <div class="columns">
-	<div>
+	<div class="panel">
+		<h2>HTML:</h2>
 		<textarea id="html"><blockquote>
   <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque tincidunt est nec eros semper varius. Maecenas pharetra eleifend nisl, quis dignissim neque eleifend in. Nulla consectetur scelerisque elit ac placerat. Proin accumsan condimentum sollicitudin. Aliquam facilisis massa sed ullamcorper feugiat.</p>
   <p>Vestibulum vel tellus non quam bibendum blandit at et arcu. Etiam pretium blandit feugiat. Donec at volutpat nunc. Nam sed pretium lacus. Vestibulum consectetur auctor lobortis. Sed at dignissim nisl. Pellentesque odio nisi, egestas ac fermentum vitae, mollis feugiat mauris. Sed dignissim non arcu in tempus. Curabitur viverra odio eget elit molestie, non euismod velit volutpat.</p>
@@ -52,13 +69,15 @@ body,
 </blockquote></textarea>
 	</div>
 	<div class="rows">
-		<div>
+		<div class="panel">
+			<h2>Query:</h2>
 			<textarea id="query" data-mode="javascript">{
   text: query( 'p', text() ),
   cite: text( 'cite' )
 }</textarea>
 		</div>
-		<div>
+		<div class="panel">
+			<h2>Result:</h2>
 			<textarea id="result" readonly></textarea>
 		</div>
 	</div>
