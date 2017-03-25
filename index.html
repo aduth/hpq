@@ -114,7 +114,7 @@ body,
 var editors = {},
 	mark;
 
-function getMatchers( node ) {
+function getMatchers( node, allowLiteral ) {
 	var name = node.name,
 		error;
 
@@ -129,12 +129,18 @@ function getMatchers( node ) {
 		case 'CallExpression':
 			name = node.callee.name;
 			if ( hpq.hasOwnProperty( name ) ) {
-				return hpq[ name ].apply( null, node.arguments.map( getMatchers ) );
+				return hpq[ name ].apply( null, node.arguments.map( function( arg ) {
+					return getMatchers( arg, true );
+				} ) );
 			}
 			break;
 
 		case 'Literal':
-			return node.value;
+			if ( allowLiteral ) {
+				return node.value;
+			} else {
+				return;
+			}
 	}
 
 	// Unsupported type, throw
