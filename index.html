@@ -65,6 +65,11 @@ body,
 	padding-top: 30px !important;
 }
 
+.mark-error {
+	border: 1px solid #fff0f0;
+	background-color: #ffd6d6;
+}
+
 .CodeMirror {
 	padding: 10px;
 }
@@ -97,31 +102,93 @@ body,
 	</div>
 </div>
 <script src="https://cdn.rawgit.com/aduth/hpq/master/dist/hpq.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/acorn/4.0.11/acorn.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/codemirror.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/mode/xml/xml.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/mode/css/css.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/mode/htmlmixed/htmlmixed.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/mode/javascript/javascript.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/addon/selection/mark-selection.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/addon/search/searchcursor.js"></script>
 <script>
 var editors = {},
-	fn;
+	mark;
 
-for ( fn in window.hpq ) {
-	window[ fn ] = window.hpq[ fn ];
+function getMatchers( node ) {
+	var name = node.name,
+		error;
+
+	switch ( node.type ) {
+		case 'ObjectExpression':
+			return node.properties.reduce( function( memo, property ) {
+				var key = property.key.name;
+				memo[ key ] = getMatchers( property.value );
+				return memo;
+			}, {} );
+
+		case 'CallExpression':
+			name = node.callee.name;
+			if ( hpq.hasOwnProperty( name ) ) {
+				return hpq[ name ].apply( null, node.arguments.map( getMatchers ) );
+			}
+			break;
+
+		case 'Literal':
+			return node.value;
+	}
+
+	// Unsupported type, throw
+	error = 'Unexpected ' + node.type;
+	if ( name ) {
+		error += ' \'' + name + '\'';
+	}
+
+	throw new Error( error );
 }
 
-function calculateResult() {
-	var markup = editors.html.getValue(),
-		query = editors.query.getValue(),
-		value;
+function getQueryResult( query ) {
+	var ast, matchers, parsed;
 
 	try {
-		eval.call( window, 'currentQuery = ' + query );
+		// The measures we take to avoid `eval`...
+		ast = acorn.parse( 'var query = ' + query );
 
-		value = window.hpq.parse( markup, window.currentQuery );
-		value = JSON.stringify( value, null, 2 );
+		// Convert AST to matchers to pass to parse
+		matchers = getMatchers( ast.body[ 0 ].declarations[ 0 ].init );
+
+		// Format parse result
+		parsed = hpq.parse( editors.html.getValue(), matchers );
+		return JSON.stringify( parsed, null, 2 );
 	} catch ( ex ) {
-		value = 'Invalid query\n\t' + ex.message;
+		// Parse error provides location, so mark text
+		if ( ex.loc ) {
+			mark = editors.query.markText( {
+				line: ex.loc.line - 1,
+				ch: ex.loc.column
+			}, {
+				line: ex.loc.line - 1,
+				ch: ex.loc.column + 1
+			}, { className: 'mark-error' } );
+		}
+
+		return ex.message;
+	}
+}
+
+function setResultValue() {
+	var query = editors.query.getValue(),
+		value;
+
+	// Clear any existing errors
+	if ( mark ) {
+		mark.clear();
+		mark = null;
+	}
+
+	if ( query ) {
+		value = getQueryResult( query );
+	} else {
+		value = '';
 	}
 
 	editors.result.setValue( value );
@@ -132,7 +199,7 @@ function calculateResult() {
 		mode = node.getAttribute( 'data-mode' ) || 'htmlmixed',
 		editor;
 
-	editor = window.CodeMirror.fromTextArea( node, {
+	editor = CodeMirror.fromTextArea( node, {
 		mode: mode,
 		lineWrapping: true,
 		readOnly: node.hasAttribute( 'readonly' )
@@ -141,11 +208,11 @@ function calculateResult() {
 	editor.setSize( '100%', '100%' );
 
 	if ( 'result' !== id ) {
-		editor.on( 'change', calculateResult );
+		editor.on( 'change', setResultValue );
 	}
 
 	editors[ id ] = editor;
 } );
 
-calculateResult();
+setResultValue();
 </script>
