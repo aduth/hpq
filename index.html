@@ -208,6 +208,7 @@ function setResultValue() {
 	editor = CodeMirror.fromTextArea( node, {
 		mode: mode,
 		lineWrapping: true,
+		smartIndent: false,
 		readOnly: node.hasAttribute( 'readonly' )
 	} );
 
