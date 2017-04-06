@@ -23,8 +23,8 @@
     "build": "npm run build:es && npm run build:umd",
     "dev": "rollem -w",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern es",
-    "pretest": "npm run build:umd",
-    "test": "mocha && npm run lint",
+    "unit-test": "NODE_ENV=test mocha --compilers js:babel-register",
+    "test": "npm run unit-test && npm run lint",
     "prepublishOnly": "npm run build"
   },
   "author": {
@@ -37,6 +37,7 @@
     "babel": "^6.23.0",
     "babel-cli": "^6.24.0",
     "babel-preset-latest": "^6.24.0",
+    "babel-register": "^6.24.0",
     "chai": "^3.5.0",
     "eslint": "^3.18.0",
     "eslint-config-wpcalypso": "^0.7.1",

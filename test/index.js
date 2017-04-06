@@ -1,20 +1,35 @@
-// Fake DOM
-global.document = require( 'jsdom' ).jsdom( '' );
-global.window = document.defaultView;
-global.navigator = window.navigator;
+/**
+ * External dependencies
+ */
+import { expect } from 'chai';
 
-// Dependencies
-const { expect } = require( 'chai' );
-const { parse, attr, prop, html, text, query } = require( '../dist/hpq' );
+/**
+ * Internal dependencies
+ */
+import { parse, attr, prop, html, text, query } from '../src';
 
 describe( 'hpq', () => {
 	// Markup
 	const markup = '<blockquote><p>…</p><p>…</p><cite class="large"><em>—</em> Andrew</cite></blockquote>';
 
 	// Element
-	let element = document.createElement( 'div' );
-	element.innerHTML = markup;
-	element = element.firstChild;
+	let element;
+
+	before( () => {
+		global.document = require( 'jsdom' ).jsdom( '' );
+		global.window = document.defaultView;
+		global.navigator = window.navigator;
+
+		element = document.createElement( 'div' );
+		element.innerHTML = markup;
+		element = element.firstChild;
+	} );
+
+	after( () => {
+		delete global.document;
+		delete global.window;
+		delete global.navigator;
+	} );
 
 	describe( 'parse()', () => {
 		it( 'should return undefined if passed no matchers', () => {

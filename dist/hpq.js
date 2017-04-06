@@ -5,6 +5,32 @@
 }(this, (function (exports) { 'use strict';
 
 /**
+ * Given object and string of dot-delimited path segments, returns value at
+ * path or undefined if path cannot be resolved.
+ *
+ * @param  {Object} object Lookup object
+ * @param  {string} path   Path to resolve
+ * @return {?*}            Resolved value
+ */
+function getPath(object, path) {
+	var segments = path.split('.');
+
+	var segment = void 0;
+	while (segment = segments.shift()) {
+		if (!(segment in object)) {
+			return;
+		}
+
+		object = object[segment];
+	}
+
+	return object;
+}
+
+/**
+ * Internal dependencies
+ */
+/**
  * Given a markup string or DOM element, creates an object aligning with the
  * shape of the matchers object, or the value returned by the matcher.
  *
@@ -63,7 +89,7 @@ function prop(selector, name) {
 		}
 
 		if (match) {
-			return match[name];
+			return getPath(match, name);
 		}
 	};
 }

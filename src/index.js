@@ -1,4 +1,9 @@
 /**
+ * Internal dependencies
+ */
+import getPath from './get-path';
+
+/**
  * Given a markup string or DOM element, creates an object aligning with the
  * shape of the matchers object, or the value returned by the matcher.
  *
@@ -57,7 +62,7 @@ export function prop( selector, name ) {
 		}
 
 		if ( match ) {
-			return match[ name ];
+			return getPath( match, name );
 		}
 	};
 }

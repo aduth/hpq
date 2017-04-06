@@ -1,3 +1,7 @@
+# 1.2.0 (TBD)
+
+- Add: Support for deep path lookup on `prop` and `attr` (example: `prop( 'p', 'style.textAlign' )`)
+
 # 1.1.1 (2017-03-24)
 
 - Fix: `package.module` is now transpiled except ES2015 modules
