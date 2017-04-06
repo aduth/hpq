@@ -1,4 +1,4 @@
-# 1.2.0 (TBD)
+# 1.2.0 (2017-04-06)
 
 - Add: Support for deep path lookup on `prop` and `attr` (example: `prop( 'p', 'style.textAlign' )`)
 
