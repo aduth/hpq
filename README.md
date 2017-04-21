@@ -43,7 +43,11 @@ Pass a markup string or DOM element to the top-level `parse` function, along wit
 
 `parse( source: string | Element, matchers: Object | Function ): Object | mixed`
 
-Given a markup string or DOM element, creates an object aligning with the shape of the matchers object, or the value returned by the matcher.
+Given a markup string or DOM element, creates an object aligning with the shape of the `matchers` object, or the value returned by the matcher function.  If `matchers` is an object, its keys are the desired parameter names and its values are matcher functions that will each extract the value of their desired parameter.
+
+Matcher functions accept a single parameter `node` (a DOM element) and return the requested value.
+
+As described above, the matchers object is an object with keys for  matching the structure of 
 
 `attr( selector: ?string, name: string ): Function`
 
