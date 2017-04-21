@@ -47,8 +47,6 @@ Given a markup string or DOM element, creates an object aligning with the shape 
 
 Matcher functions accept a single parameter `node` (a DOM element) and return the requested value.
 
-As described above, the matchers object is an object with keys for  matching the structure of 
-
 `attr( selector: ?string, name: string ): Function`
 
 Generates a function which matches node of type selector, returning an attribute by name if the attribute exists. If no selector is passed, returns attribute of the query element.
