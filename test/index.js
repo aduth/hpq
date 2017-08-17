@@ -44,6 +44,12 @@ describe( 'hpq', () => {
 			expect( result ).to.equal( '— Andrew' );
 		} );
 
+		it( 'should use markup root node as base for parse', () => {
+			const result = parse( element, prop( 'nodeName' ) );
+
+			expect( result ).to.equal( 'BLOCKQUOTE' );
+		} );
+
 		it( 'should return matcher value if passed function matcher', () => {
 			const result = parse( element, text( 'cite' ) );
 

@@ -20,7 +20,7 @@ export function parse( source, matchers ) {
 	if ( 'string' === typeof source ) {
 		const doc = document.implementation.createHTMLDocument( '' );
 		doc.body.innerHTML = source;
-		source = doc.body;
+		source = doc.body.firstChild;
 	}
 
 	// Return singular value
