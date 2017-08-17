@@ -47,7 +47,7 @@ function parse(source, matchers) {
 	if ('string' === typeof source) {
 		var doc = document.implementation.createHTMLDocument('');
 		doc.body.innerHTML = source;
-		source = doc.body;
+		source = doc.body.firstChild;
 	}
 
 	// Return singular value
