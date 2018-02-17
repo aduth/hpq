@@ -69,7 +69,7 @@ Creates a new matching context by first finding elements matching selector using
 
 ## License
 
-Copyright (c) 2017 Andrew Duthie
+Copyright (c) 2018 Andrew Duthie
 
 [The MIT License (MIT)](https://opensource.org/licenses/MIT)
 
