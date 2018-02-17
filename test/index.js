@@ -58,11 +58,11 @@ describe( 'hpq', () => {
 
 		it( 'should return parsed matches in shape of matcher object', () => {
 			const result = parse( element, {
-				author: text( 'cite' )
+				author: text( 'cite' ),
 			} );
 
 			expect( result ).to.eql( {
-				author: '— Andrew'
+				author: '— Andrew',
 			} );
 		} );
 	} );
@@ -188,7 +188,7 @@ describe( 'hpq', () => {
 			const result = parse( element, { text: query( 'p', text() ) } );
 
 			expect( result ).to.eql( {
-				text: [ '…', '…' ]
+				text: [ '…', '…' ],
 			} );
 		} );
 	} );

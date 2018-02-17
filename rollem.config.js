@@ -4,18 +4,18 @@ const config = {
 	moduleName: 'hpq',
 	plugins: [
 		require( 'rollup-plugin-babel' )( {
-			exclude: 'node_modules/**'
-		} )
+			exclude: 'node_modules/**',
+		} ),
 	],
-	dest: 'dist/hpq.js'
+	dest: 'dist/hpq.js',
 };
 
 export default [
 	config,
 	Object.assign( {}, config, {
 		plugins: config.plugins.concat( [
-			require( 'rollup-plugin-uglify' )()
+			require( 'rollup-plugin-uglify' )(),
 		] ),
-		dest: 'dist/hpq.min.js'
-	} )
+		dest: 'dist/hpq.min.js',
+	} ),
 ];
