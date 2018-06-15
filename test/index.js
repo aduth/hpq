@@ -10,7 +10,7 @@ import { parse, attr, prop, html, text, query } from '../src';
 
 describe( 'hpq', () => {
 	// Markup
-	const markup = '<blockquote><p>…</p><p>…</p><cite class="large"><em>—</em> Andrew</cite></blockquote>';
+	const markup = '<blockquote><p>…</p><p>…</p><cite class="large"><em>—</em> Andrew</cite></blockquote><audio src="#" loop>';
 
 	// Element
 	let element;
@@ -134,6 +134,12 @@ describe( 'hpq', () => {
 			const result = parse( element, attr( 'cite', 'class' ) );
 
 			expect( result ).to.equal( 'large' );
+		} );
+
+		it( 'should return true if the attribute is set without value', () => {
+			const result = parse( element, attr( 'audio', 'loop' ) );
+
+			expect( result ).to.be.true;
 		} );
 	} );
 
