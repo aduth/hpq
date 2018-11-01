@@ -4,6 +4,23 @@
 import getPath from './get-path';
 
 /**
+ * Function returning a DOM document created by `createHTMLDocument`. The same
+ * document is returned between invocations.
+ *
+ * @return {Document} DOM document.
+ */
+const getDocument = ( () => {
+	let doc;
+	return () => {
+		if ( ! doc ) {
+			doc = document.implementation.createHTMLDocument( '' );
+		}
+
+		return doc;
+	};
+} )();
+
+/**
  * Given a markup string or DOM element, creates an object aligning with the
  * shape of the matchers object, or the value returned by the matcher.
  *
@@ -18,7 +35,7 @@ export function parse( source, matchers ) {
 
 	// Coerce to element
 	if ( 'string' === typeof source ) {
-		const doc = document.implementation.createHTMLDocument( '' );
+		const doc = getDocument();
 		doc.body.innerHTML = source;
 		source = doc.body;
 	}
