@@ -1,14 +1,15 @@
 {
 	"presets": [
-		[ "latest", {
-			"es2015": {
-				"modules": false
+		[ "@babel/env", {
+			"modules": false,
+			"targets": {
+				"ie": 11
 			}
 		} ]
 	],
 	"env": {
 		"test": {
-			"presets": [ "latest" ]
+			"presets": [ "@babel/env" ]
 		}
 	}
 }
