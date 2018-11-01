@@ -1,4 +1,4 @@
-## 1.3.0 (Unreleased)
+## 1.3.0 (2018-10-31)
 
 - Improvement: Improves performance of markup string parsing by ~4x.
 
