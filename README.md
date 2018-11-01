@@ -27,7 +27,7 @@ hpq.parse( '<blockquote><p>...</p><p>...</p><cite>Andrew</cite></blockquote>', {
 
 ## Getting Started
 
-Download the generated script file from [`dist/hpq.js`](https://raw.githubusercontent.com/aduth/hpq/master/dist/hpq.js) or install via NPM if you have a front-end build process:
+[Download the generated script file](https://unpkg.com/hpq/dist/hpq.min.js) or install via NPM if you have a front-end build process:
 
 ```
 npm install hpq
