@@ -35,18 +35,18 @@
   "license": "MIT",
   "devDependencies": {
     "@aduth/eslint-config": "^3.0.0",
-    "@babel/cli": "^7.1.2",
-    "@babel/core": "^7.1.2",
-    "@babel/preset-env": "^7.1.0",
-    "@babel/register": "^7.0.0",
+    "@babel/cli": "^7.6.0",
+    "@babel/core": "^7.6.0",
+    "@babel/preset-env": "^7.6.0",
+    "@babel/register": "^7.6.0",
     "chai": "^4.2.0",
-    "eslint": "^5.8.0",
-    "eslint-plugin-jsdoc": "^3.9.1",
-    "jsdom": "^13.0.0",
+    "eslint": "^5.16.0",
+    "eslint-plugin-jsdoc": "^3.15.1",
+    "jsdom": "^15.1.1",
     "mocha": "^5.2.0",
-    "rollup": "^0.66.6",
-    "rollup-plugin-babel": "^4.0.3",
-    "rollup-plugin-uglify": "^6.0.0",
+    "rollup": "^0.68.2",
+    "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-uglify": "^6.0.3",
     "rollup-watch": "^4.3.1"
   }
 }
