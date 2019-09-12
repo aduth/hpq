@@ -13,7 +13,13 @@ const getDocument = ( () => {
 	let doc;
 	return () => {
 		if ( ! doc ) {
-			doc = document.implementation.createHTMLDocument( '' );
+			if ( process.browser ) {
+				doc = document.implementation.createHTMLDocument( '' );
+			} else {
+				// Use jsdom in Node.js environment to emulate Browser APIs.
+				const DOMImplementation = require( 'jsdom/lib/jsdom/living/generated/DOMImplementation' );
+				doc = DOMImplementation.createImpl().createHTMLDocument( '' );
+			}
 		}
 
 		return doc;

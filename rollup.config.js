@@ -1,4 +1,5 @@
 import babel from 'rollup-plugin-babel';
+import replace from '@rollup/plugin-replace';
 import uglify from 'rollup-plugin-uglify';
 
 export default [
@@ -13,6 +14,7 @@ export default [
 			babel( {
 				exclude: 'node_modules/**',
 			} ),
+			replace( { 'process.browser': true } ),
 		],
 	},
 	{
@@ -26,6 +28,7 @@ export default [
 			babel( {
 				exclude: 'node_modules/**',
 			} ),
+			replace( { 'process.browser': true } ),
 			uglify,
 		],
 	},
