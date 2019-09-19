@@ -1,6 +1,6 @@
 {
 	"root": true,
-	"extends": "@aduth/eslint-config",
+	"extends": [ "plugin:@wordpress/eslint-plugin/esnext" ],
 	"parserOptions": {
 		"ecmaVersion": 6,
 		"sourceType": "module"
@@ -9,5 +9,15 @@
 		"browser": true,
 		"node": true,
 		"mocha": true
-	}
+	},
+	"overrides": [
+		{
+			"files": [
+				"test/*.js"
+			],
+			"rules": {
+				"no-unused-expressions": "off"
+			}
+		}
+	]
 }

@@ -23,7 +23,7 @@
     "build": "npm run build:es && npm run build:umd",
     "dev": "rollup -c -w",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern es",
-    "unit-test": "NODE_ENV=test mocha --compilers js:@babel/register",
+    "unit-test": "NODE_ENV=test mocha --require @babel/register",
     "test": "npm run unit-test && npm run lint",
     "prepublishOnly": "npm run build"
   },
@@ -34,19 +34,17 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@aduth/eslint-config": "^3.0.0",
     "@babel/cli": "^7.6.0",
     "@babel/core": "^7.6.0",
     "@babel/preset-env": "^7.6.0",
     "@babel/register": "^7.6.0",
+    "@wordpress/eslint-plugin": "^3.1.0",
     "chai": "^4.2.0",
-    "eslint": "^5.16.0",
-    "eslint-plugin-jsdoc": "^3.15.1",
+    "eslint": "^6.4.0",
     "jsdom": "^15.1.1",
-    "mocha": "^5.2.0",
-    "rollup": "^0.68.2",
+    "mocha": "^6.2.0",
+    "rollup": "^1.21.4",
     "rollup-plugin-babel": "^4.3.3",
-    "rollup-plugin-uglify": "^6.0.3",
-    "rollup-watch": "^4.3.1"
+    "rollup-plugin-uglify": "^6.0.3"
   }
 }
