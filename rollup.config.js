@@ -22,6 +22,20 @@ export default [
 		output: {
 			format: 'umd',
 			name: 'hpq',
+			file: 'dist/hpq.node.js',
+		},
+		plugins: [
+			babel( {
+				exclude: 'node_modules/**',
+			} ),
+			replace( { 'process.browser': false } ),
+		],
+	},
+	{
+		input: 'src/index.js',
+		output: {
+			format: 'umd',
+			name: 'hpq',
 			file: 'dist/hpq.min.js',
 		},
 		plugins: [
