@@ -14,7 +14,10 @@ export default [
 			babel( {
 				exclude: 'node_modules/**',
 			} ),
-			replace( { 'process.browser': true } ),
+			replace( {
+				"typeof document === 'undefined'": false,
+				delimiters: [ '', '' ],
+			} ),
 		],
 	},
 	{
@@ -28,7 +31,6 @@ export default [
 			babel( {
 				exclude: 'node_modules/**',
 			} ),
-			replace( { 'process.browser': false } ),
 		],
 	},
 	{
@@ -42,7 +44,10 @@ export default [
 			babel( {
 				exclude: 'node_modules/**',
 			} ),
-			replace( { 'process.browser': true } ),
+			replace( {
+				"typeof document === 'undefined'": false,
+				delimiters: [ '', '' ],
+			} ),
 			uglify,
 		],
 	},

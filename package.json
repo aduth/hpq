@@ -35,7 +35,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "jsdom": "^15.2.1"
+    "jsdom": "^16.2.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.6.0",

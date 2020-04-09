@@ -13,15 +13,11 @@ const getDocument = ( () => {
 	let doc;
 	return () => {
 		if ( ! doc ) {
-			let impl;
-			if ( process.browser ) {
-				impl = document.implementation;
-			} else {
-				// Use jsdom in Node.js environment to emulate Browser APIs.
-				const DOMImplementation = require( 'jsdom/lib/jsdom/living/generated/DOMImplementation' );
-				impl = DOMImplementation.createImpl();
+			if ( typeof document === 'undefined' ) {
+				document = new ( require( 'jsdom' ).JSDOM )().window.document;
 			}
-			doc = impl.createHTMLDocument( '' );
+
+			doc = document.implementation.createHTMLDocument( '' );
 		}
 
 		return doc;
