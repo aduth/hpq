@@ -9,16 +9,16 @@ import getPath from './get-path';
  *
  * @return {Document} DOM document.
  */
-const getDocument = ( () => {
+const getDocument = (() => {
 	let doc;
 	return () => {
-		if ( ! doc ) {
-			doc = document.implementation.createHTMLDocument( '' );
+		if (!doc) {
+			doc = document.implementation.createHTMLDocument('');
 		}
 
 		return doc;
 	};
-} )();
+})();
 
 /**
  * Given a markup string or DOM element, creates an object aligning with the
@@ -28,33 +28,33 @@ const getDocument = ( () => {
  * @param  {(Object|Function)} matchers Matcher function or object of matchers
  * @return {(Object|*)}                 Matched value(s), shaped by object
  */
-export function parse( source, matchers ) {
-	if ( ! matchers ) {
+export function parse(source, matchers) {
+	if (!matchers) {
 		return;
 	}
 
 	// Coerce to element
-	if ( 'string' === typeof source ) {
+	if ('string' === typeof source) {
 		const doc = getDocument();
 		doc.body.innerHTML = source;
 		source = doc.body;
 	}
 
 	// Return singular value
-	if ( 'function' === typeof matchers ) {
-		return matchers( source );
+	if ('function' === typeof matchers) {
+		return matchers(source);
 	}
 
 	// Bail if we can't handle matchers
-	if ( Object !== matchers.constructor ) {
+	if (Object !== matchers.constructor) {
 		return;
 	}
 
 	// Shape result by matcher object
-	return Object.keys( matchers ).reduce( ( memo, key ) => {
-		memo[ key ] = parse( source, matchers[ key ] );
+	return Object.keys(matchers).reduce((memo, key) => {
+		memo[key] = parse(source, matchers[key]);
 		return memo;
-	}, {} );
+	}, {});
 }
 
 /**
@@ -66,20 +66,20 @@ export function parse( source, matchers ) {
  * @param  {string}  name     Property name
  * @return {*}                Property value
  */
-export function prop( selector, name ) {
-	if ( 1 === arguments.length ) {
+export function prop(selector, name) {
+	if (1 === arguments.length) {
 		name = selector;
 		selector = undefined;
 	}
 
-	return function( node ) {
+	return function (node) {
 		let match = node;
-		if ( selector ) {
-			match = node.querySelector( selector );
+		if (selector) {
+			match = node.querySelector(selector);
 		}
 
-		if ( match ) {
-			return getPath( match, name );
+		if (match) {
+			return getPath(match, name);
 		}
 	};
 }
@@ -93,16 +93,16 @@ export function prop( selector, name ) {
  * @param  {string}  name     Attribute name
  * @return {?string}          Attribute value
  */
-export function attr( selector, name ) {
-	if ( 1 === arguments.length ) {
+export function attr(selector, name) {
+	if (1 === arguments.length) {
 		name = selector;
 		selector = undefined;
 	}
 
-	return function( node ) {
-		const attributes = prop( selector, 'attributes' )( node );
-		if ( attributes && attributes.hasOwnProperty( name ) ) {
-			return attributes[ name ].value;
+	return function (node) {
+		const attributes = prop(selector, 'attributes')(node);
+		if (attributes && Object.prototype.hasOwnProperty.call(attributes, name)) {
+			return attributes[name].value;
 		}
 	};
 }
@@ -115,8 +115,8 @@ export function attr( selector, name ) {
  * @param  {?string} selector Optional selector
  * @return {string}           Inner HTML
  */
-export function html( selector ) {
-	return prop( selector, 'innerHTML' );
+export function html(selector) {
+	return prop(selector, 'innerHTML');
 }
 
 /**
@@ -127,8 +127,8 @@ export function html( selector ) {
  * @param  {?string} selector Optional selector
  * @return {string}           Text content
  */
-export function text( selector ) {
-	return prop( selector, 'textContent' );
+export function text(selector) {
+	return prop(selector, 'textContent');
 }
 
 /**
@@ -142,9 +142,9 @@ export function text( selector ) {
  * @param  {(Object|Function)} matchers Matcher function or object of matchers
  * @return {Array.<*,Object>}           Array of matched value(s)
  */
-export function query( selector, matchers ) {
-	return function( node ) {
-		const matches = node.querySelectorAll( selector );
-		return [].map.call( matches, ( match ) => parse( match, matchers ) );
+export function query(selector, matchers) {
+	return function (node) {
+		const matches = node.querySelectorAll(selector);
+		return [].map.call(matches, (match) => parse(match, matchers));
 	};
 }

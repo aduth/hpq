@@ -1,23 +1,18 @@
 {
 	"root": true,
-	"extends": [ "plugin:@wordpress/eslint-plugin/esnext" ],
+	"extends": ["eslint:recommended", "prettier"],
+	"plugins": ["prettier"],
 	"parserOptions": {
-		"ecmaVersion": 6,
+		"ecmaVersion": 2020,
 		"sourceType": "module"
 	},
 	"env": {
+		"es6": true,
 		"browser": true,
-		"node": true,
-		"mocha": true
+		"mocha": true,
+		"node": true
 	},
-	"overrides": [
-		{
-			"files": [
-				"test/*.js"
-			],
-			"rules": {
-				"no-unused-expressions": "off"
-			}
-		}
-	]
+	"rules": {
+		"prettier/prettier": "error"
+	}
 }

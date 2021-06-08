@@ -6,16 +6,16 @@
  * @param  {string} path   Path to resolve
  * @return {?*}            Resolved value
  */
-export default function getPath( object, path ) {
-	const segments = path.split( '.' );
+export default function getPath(object, path) {
+	const segments = path.split('.');
 
 	let segment;
-	while ( ( segment = segments.shift() ) ) {
-		if ( ! ( segment in object ) ) {
+	while ((segment = segments.shift())) {
+		if (!(segment in object)) {
 			return;
 		}
 
-		object = object[ segment ];
+		object = object[segment];
 	}
 
 	return object;

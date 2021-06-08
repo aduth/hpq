@@ -10,9 +10,9 @@ export default [
 			file: 'dist/hpq.js',
 		},
 		plugins: [
-			babel( {
+			babel({
 				exclude: 'node_modules/**',
-			} ),
+			}),
 		],
 	},
 	{
@@ -23,9 +23,9 @@ export default [
 			file: 'dist/hpq.min.js',
 		},
 		plugins: [
-			babel( {
+			babel({
 				exclude: 'node_modules/**',
-			} ),
+			}),
 			terser(),
 		],
 	},
