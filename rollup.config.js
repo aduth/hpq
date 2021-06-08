@@ -1,5 +1,5 @@
-import babel from 'rollup-plugin-babel';
-import uglify from 'rollup-plugin-uglify';
+import babel from '@rollup/plugin-babel';
+import { terser } from 'rollup-plugin-terser';
 
 export default [
 	{
@@ -26,7 +26,7 @@ export default [
 			babel( {
 				exclude: 'node_modules/**',
 			} ),
-			uglify,
+			terser(),
 		],
 	},
 ];
