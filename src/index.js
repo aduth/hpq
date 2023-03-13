@@ -33,7 +33,7 @@ const getDocument = (() => {
  *
  * @param  {string|Element} source   Source content
  * @param  {Matcher}        matchers Matcher function or object of matchers
- * @return {any}            Matched value(s), shaped by object
+ * @return {any}                     Matched value(s), shaped by object
  */
 export function parse(source, matchers) {
 	if (!matchers) {
@@ -123,8 +123,8 @@ export function attr(selector, name) {
  *
  * @see prop()
  *
- * @param  {string=} selector Optional selector
- * @return {(node: Element) => string} Matcher which returns innerHTML
+ * @param  {string=}                   selector Optional selector
+ * @return {(node: Element) => string}          Matcher which returns innerHTML
  */
 export function html(selector) {
 	return prop(selector, 'innerHTML');
@@ -135,8 +135,8 @@ export function html(selector) {
  *
  * @see prop()
  *
- * @param  {string} selector Optional selector
- * @return {(node: Element) => string} Matcher which returns text content
+ * @param  {string}                    selector Optional selector
+ * @return {(node: Element) => string}          Matcher which returns text content
  */
 export function text(selector) {
 	return prop(selector, 'textContent');
@@ -151,7 +151,7 @@ export function text(selector) {
  *
  * @param  {string}  selector Selector to match
  * @param  {Matcher} matchers Matcher function or object of matchers
- * @return           Matcher function which returns an array of matched value(s)
+ * @return                    Matcher function which returns an array of matched value(s)
  */
 export function query(selector, matchers) {
 	/** @type {(node: Element) => any[]} */

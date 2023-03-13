@@ -4,7 +4,7 @@
  *
  * @param  {Record<string, any>} object Lookup object
  * @param  {string}              path   Path to resolve
- * @return {*=}                  Resolved value
+ * @return {*=}                         Resolved value
  */
 export default function getPath(object, path) {
 	const segments = path.split('.');
