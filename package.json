@@ -19,7 +19,7 @@
     "src"
   ],
   "scripts": {
-    "build:es": "babel src --out-dir es",
+    "build:es": "babel src/index.ts --out-dir es",
     "build:umd": "rollup -c",
     "build:types": "tsc -b",
     "build": "npm run build:es && npm run build:umd",
@@ -39,9 +39,12 @@
     "@babel/cli": "^7.20.7",
     "@babel/core": "^7.20.12",
     "@babel/preset-env": "^7.20.2",
+    "@babel/preset-typescript": "^7.21.0",
     "@babel/register": "^7.18.9",
     "@rollup/plugin-babel": "^6.0.3",
     "@rollup/plugin-terser": "^0.4.0",
+    "@typescript-eslint/eslint-plugin": "^5.53.0",
+    "@typescript-eslint/parser": "^5.53.0",
     "chai": "^4.3.7",
     "eslint": "^8.34.0",
     "eslint-config-prettier": "^8.6.0",

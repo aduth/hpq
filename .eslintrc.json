@@ -1,10 +1,16 @@
 {
 	"root": true,
-	"extends": ["eslint:recommended", "prettier"],
+	"extends": [
+		"eslint:recommended",
+		"prettier",
+		"plugin:@typescript-eslint/recommended"
+	],
 	"plugins": ["prettier"],
+	"parser": "@typescript-eslint/parser",
 	"parserOptions": {
 		"ecmaVersion": 2020,
-		"sourceType": "module"
+		"sourceType": "module",
+		"project": [ "./tsconfig.json" ]
 	},
 	"env": {
 		"es6": true,
