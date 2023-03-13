@@ -2,9 +2,9 @@
  * Given object and string of dot-delimited path segments, returns value at
  * path or undefined if path cannot be resolved.
  *
- * @param  {Object} object Lookup object
- * @param  {string} path   Path to resolve
- * @return {?*}            Resolved value
+ * @param  {Record<string, any>} object Lookup object
+ * @param  {string}              path   Path to resolve
+ * @return {*=}                  Resolved value
  */
 export default function getPath(object, path) {
 	const segments = path.split('.');

@@ -12,6 +12,7 @@
   },
   "main": "dist/hpq.js",
   "module": "es/index.js",
+  "types": "es/index.d.ts",
   "files": [
     "dist",
     "es",
@@ -20,7 +21,8 @@
   "scripts": {
     "build:es": "babel src --out-dir es",
     "build:umd": "rollup -c",
-    "build": "npm run build:es && npm run build:umd",
+    "build:types": "tsc -b",
+    "build": "npm run build:es && npm run build:umd && npm run build:types",
     "dev": "rollup -c -w",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern es",
     "unit-test": "NODE_ENV=test mocha --require @babel/register",
@@ -47,6 +49,7 @@
     "jsdom": "^21.1.0",
     "mocha": "^10.2.0",
     "prettier": "^2.8.4",
-    "rollup": "^3.15.0"
+    "rollup": "^3.15.0",
+    "typescript": "^4.9.5"
   }
 }
