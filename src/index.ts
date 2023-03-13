@@ -11,7 +11,7 @@ type Matcher = MatcherFn | MatcherObj;
  * Function returning a DOM document created by `createHTMLDocument`. The same
  * document is returned between invocations.
  *
- * @return {Document} DOM document.
+ * @return DOM document.
  */
 const getDocument = (() => {
 	let doc: Document | undefined;
@@ -77,7 +77,7 @@ export function prop(arg1: string | undefined, arg2?: string): MatcherFn {
 	let selector: string | undefined;
 	if (1 === arguments.length) {
 		name = arg1 as string;
-		selector = undefined
+		selector = undefined;
 	} else {
 		name = arg2 as string;
 		selector = arg1;
@@ -109,7 +109,7 @@ export function attr(arg1: string | undefined, arg2?: string): MatcherFn {
 	let selector: string | undefined;
 	if (1 === arguments.length) {
 		name = arg1 as string;
-		selector = undefined
+		selector = undefined;
 	} else {
 		name = arg2 as string;
 		selector = arg1;
@@ -128,7 +128,7 @@ export function attr(arg1: string | undefined, arg2?: string): MatcherFn {
  * @see prop()
  *
  * @param selector Optional selector
- * @return Inner HTML
+ * @return         Inner HTML
  */
 export function html(selector?: string) {
 	return prop(selector, 'innerHTML');
@@ -139,8 +139,8 @@ export function html(selector?: string) {
  *
  * @see prop()
  *
- * @param selector Optional selector
- * @return         Text content
+ * @param  selector Optional selector
+ * @return          Text content
  */
 export function text(selector?: string) {
 	return prop(selector, 'textContent');
@@ -155,7 +155,7 @@ export function text(selector?: string) {
  *
  * @param selector Selector to match
  * @param matchers Matcher function or object of matchers
- * @return Matcher function which returns an array of matched value(s)
+ * @return         Matcher function which returns an array of matched value(s)
  */
 export function query(selector: string, matchers: Matcher) {
 	return function (node: Element): any[] {
