@@ -1,9 +1,4 @@
 /**
- * Internal dependencies
- */
-import getPath from './get-path';
-
-/**
  * Function returning a DOM document created by `createHTMLDocument`. The same
  * document is returned between invocations.
  *
@@ -78,8 +73,8 @@ export function prop(selector, name) {
 			match = node.querySelector(selector);
 		}
 
-		if (match) {
-			return getPath(match, name);
+		if (match && name in match) {
+			return match[name];
 		}
 	};
 }
