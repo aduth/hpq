@@ -41,10 +41,9 @@ const getDocument = (() => {
  * @template {MatcherObj<T>} O
  *
  * @overload
- * @param {Element|string} source
- * @param {O} matchers
- * @return {{[K in keyof O]: ReturnType<O[K]>}}
-
+ * @param {Element|string} source Source content
+ * @param {O} matchers Object of matchers
+ * @return {{[K in keyof O]: ReturnType<O[K]>}} Matched values, shaped by object
  */
 
 /**
@@ -52,10 +51,9 @@ const getDocument = (() => {
  * @template {MatcherFn<T>} F
  *
  * @overload
- * @param {Element|string} source
- * @param {F} matchers
- * @return {ReturnType<F>}
-
+ * @param {Element|string} source Source content
+ * @param {F} matchers matcher Matcher function
+ * @return {ReturnType<F>} Matched value
  */
 
 /**
@@ -66,9 +64,8 @@ const getDocument = (() => {
  * @template {MatcherFn<T>} F
  * @template {MatcherObj<T>} O
  *
- * @param  {string|Element}  source   Source content
- * @param  {Matcher<T>}      matchers Matcher function or object of matchers
- * @return {{[K in keyof O]: ReturnType<O[K]>}|ReturnType<F>|undefined} Matched value(s), shaped by object
+ * @param  {string|Element} source Source content
+ * @param  {Matcher<T>} matchers Matcher function or object of matchers
  */
 export function parse(source, matchers) {
 	if (!matchers) {
@@ -93,7 +90,6 @@ export function parse(source, matchers) {
 	}
 
 	// Shape result by matcher object
-
 	return /** @type {{ [K in keyof O]: ReturnType<O[K]>; }} */ (
 		Object.keys(matchers).reduce((memo, key) => {
 			memo[key] = parse(source, matchers[key]);
@@ -106,8 +102,8 @@ export function parse(source, matchers) {
  * @template T
  *
  * @overload
- * @param {string}        property name
- * @return {MatcherFn<T>}          Matcher function returning the property value
+ * @param {string} name Property name
+ * @return {MatcherFn<T>} Matcher function returning the property value
  */
 
 /**
@@ -115,8 +111,8 @@ export function parse(source, matchers) {
  *
  * @overload
  * @param {string|undefined} selector Optional selector
- * @param {string}           name     Property name
- * @return {MatcherFn<T>}             Matcher function returning the property value
+ * @param {string} name Property name
+ * @return {MatcherFn<T>} Matcher function returning the property value
  */
 
 /**
@@ -124,9 +120,9 @@ export function parse(source, matchers) {
  * attribute by property if the attribute exists. If no selector is passed,
  * returns property of the query element.
  *
- * @param  {string=}           selector Optional selector
- * @param  {string=}           name     Property name
- * @return {MatcherFn<T>}               Matcher function returning the property value
+ * @param  {string=} selector Optional selector
+ * @param  {string=} name Property name
+ * @return {MatcherFn<T>} Matcher function returning the property value
  */
 export function prop(selector, name) {
 	if (1 === arguments.length) {
@@ -149,15 +145,15 @@ export function prop(selector, name) {
 
 /**
  * @overload
- * @param {string}             name Attribute name
- * @return {MatcherFn<string>}      Matcher function returning the attribute value
+ * @param {string} name Attribute name
+ * @return {MatcherFn<string>} Matcher function returning the attribute value
  */
 
 /**
  * @overload
- * @param {string|undefined}   selector Optional selector
- * @param {string}             name     Attribute name
- * @return {MatcherFn<string>}          Matcher function returning the attribute value
+ * @param {string|undefined} selector Optional selector
+ * @param {string} name Attribute name
+ * @return {MatcherFn<string>} Matcher function returning the attribute value
  */
 
 /**
@@ -165,9 +161,9 @@ export function prop(selector, name) {
  * attribute by name if the attribute exists. If no selector is passed,
  * returns attribute of the query element.
  *
- * @param  {string=}                     selector Optional selector
- * @param  {string=}                     name     Attribute name
- * @return {MatcherFn<string|undefined>}          Matcher function returning the attribute value
+ * @param  {string=} selector Optional selector
+ * @param  {string=} name Attribute name
+ * @return {MatcherFn<string|undefined>} Matcher function returning the attribute value
  */
 export function attr(selector, name) {
 	if (1 === arguments.length) {
@@ -176,6 +172,7 @@ export function attr(selector, name) {
 	}
 
 	return function (node) {
+		// This is really a `NamedNodeMap` but it's being accessed like a Record.
 		const attributes = /** @type {Record<string, {value: string}>}} */ (
 			prop(selector, 'attributes')(node)
 		);
@@ -193,8 +190,8 @@ export function attr(selector, name) {
  *
  * @see prop()
  *
- * @param  {string=}                   selector Optional selector
- * @return {(node: Element) => string}          Matcher which returns innerHTML
+ * @param {string=} selector Optional selector
+ * @return {(node: Element) => string} Matcher which returns innerHTML
  */
 export function html(selector) {
 	return prop(selector, 'innerHTML');
@@ -205,8 +202,8 @@ export function html(selector) {
  *
  * @see prop()
  *
- * @param  {string}                    selector Optional selector
- * @return {(node: Element) => string}          Matcher which returns text content
+ * @param {string} selector Optional selector
+ * @return {(node: Element) => string} Matcher which returns text content
  */
 export function text(selector) {
 	return prop(selector, 'textContent');
@@ -221,16 +218,16 @@ export function text(selector) {
  *
  * @template T
  *
- * @param  {string}     selector Selector to match
- * @param  {Matcher<T>} matchers Matcher function or object of matchers
- * @return                       Matcher function which returns an array of matched value(s)
+ * @param {string} selector Selector to match
+ * @param {Matcher<T>} matchers Matcher function or object of matchers
+ * @return Matcher function which returns an array of matched value(s)
  */
 export function query(selector, matchers) {
 	/** @type {(node: Element) => any[]} */
 	return function (node) {
 		const matches = node.querySelectorAll(selector);
 		return [].map.call(matches, (/** @type {Element} */ match) =>
-			parse(match, /** @type {MatcherObj<string>} */ (matchers))
+			parse(match, /** @type {MatcherObj<T>} */ (matchers))
 		);
 	};
 }
