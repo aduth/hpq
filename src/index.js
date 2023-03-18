@@ -68,7 +68,7 @@ const getDocument = (() => {
  *
  * @param  {string|Element}  source   Source content
  * @param  {Matcher<T>}      matchers Matcher function or object of matchers
- * @return {{[K in keyof O]: ReturnType<O[K]>}|ReturnType<F>|undefined}                           Matched value(s), shaped by object
+ * @return {{[K in keyof O]: ReturnType<O[K]>}|ReturnType<F>|undefined} Matched value(s), shaped by object
  */
 export function parse(source, matchers) {
 	if (!matchers) {
@@ -126,7 +126,7 @@ export function parse(source, matchers) {
  *
  * @param  {string=}           selector Optional selector
  * @param  {string=}           name     Property name
- * @return {MatcherFn<T>}          Matcher function returning the property value
+ * @return {MatcherFn<T>}               Matcher function returning the property value
  */
 export function prop(selector, name) {
 	if (1 === arguments.length) {
