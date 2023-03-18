@@ -43,7 +43,7 @@ const getDocument = (() => {
  * @overload
  * @param {Element|string} source
  * @param {O} matchers
- * @return {{ [K in keyof O]: ReturnType<O[K]> }}
+ * @return {{[K in keyof O]: ReturnType<O[K]>}}
 
  */
 
@@ -62,9 +62,13 @@ const getDocument = (() => {
  * Given a markup string or DOM element, creates an object aligning with the
  * shape of the matchers object, or the value returned by the matcher.
  *
- * @param  {string|Element} source   Source content
- * @param  {Matcher<string>}        matchers Matcher function or object of matchers
- * @return {any}                     Matched value(s), shaped by object
+ * @template T
+ * @template {MatcherFn<T>} F
+ * @template {MatcherObj<T>} O
+ *
+ * @param  {string|Element}  source   Source content
+ * @param  {Matcher<T>}      matchers Matcher function or object of matchers
+ * @return {{[K in keyof O]: ReturnType<O[K]>}|ReturnType<F>|undefined}                           Matched value(s), shaped by object
  */
 export function parse(source, matchers) {
 	if (!matchers) {
@@ -161,9 +165,9 @@ export function prop(selector, name) {
  * attribute by name if the attribute exists. If no selector is passed,
  * returns attribute of the query element.
  *
- * @param  {string=}           selector Optional selector
- * @param  {string=}           name     Attribute name
- * @return {MatcherFn<string>}          Matcher function returning the attribute value
+ * @param  {string=}                     selector Optional selector
+ * @param  {string=}                     name     Attribute name
+ * @return {MatcherFn<string|undefined>}          Matcher function returning the attribute value
  */
 export function attr(selector, name) {
 	if (1 === arguments.length) {
@@ -172,7 +176,9 @@ export function attr(selector, name) {
 	}
 
 	return function (node) {
-		const attributes = /** @type {NamedNodeMap}} */ (prop(selector, 'attributes')(node));
+		const attributes = /** @type {Record<string, {value: string}>}} */ (
+			prop(selector, 'attributes')(node)
+		);
 		if (
 			attributes &&
 			Object.prototype.hasOwnProperty.call(attributes, /** @type {string} */ (name))
@@ -213,7 +219,7 @@ export function text(selector) {
  *
  * @see parse()
  *
- * @template {unknown} T
+ * @template T
  *
  * @param  {string}     selector Selector to match
  * @param  {Matcher<T>} matchers Matcher function or object of matchers
@@ -223,6 +229,8 @@ export function query(selector, matchers) {
 	/** @type {(node: Element) => any[]} */
 	return function (node) {
 		const matches = node.querySelectorAll(selector);
-		return [].map.call(matches, (/** @type {Element} */ match) => parse(match, matchers));
+		return [].map.call(matches, (/** @type {Element} */ match) =>
+			parse(match, /** @type {MatcherObj<string>} */ (matchers))
+		);
 	};
 }
