@@ -22,18 +22,50 @@ const getDocument = (() => {
 })();
 
 /**
- * @typedef {(node: Element) => any} MatcherFn
- * @typedef {Record<string, MatcherFn>} MatcherObj
- * @typedef {(MatcherFn|MatcherObj)} Matcher
+ * @typedef {(node: Element) => T} MatcherFn
+ * @template T
+ */
+
+/**
+ * @typedef {Record<string, MatcherFn<T>>} MatcherObj
+ * @template T
+ */
+
+/**
+ * @typedef {(MatcherFn<T>|MatcherObj<T>)} Matcher
+ * @template T
+ */
+
+/**
+ * @overload
+
+ * @param {Element|string}                        source
+ * @param {O}                                     matchers
+ * @return {{ [K in keyof O]: ReturnType<O[K]> }}
+ * @template {any}           T
+ * @template {MatcherObj<T>} O
+ */
+
+/**
+ * @overload
+ * @param {Element|string}  source
+ * @param {F}               matchers
+ * @return {ReturnType<F>}
+ * @template {any}          T
+ * @template {MatcherFn<T>} F
  */
 
 /**
  * Given a markup string or DOM element, creates an object aligning with the
  * shape of the matchers object, or the value returned by the matcher.
  *
- * @param  {string|Element} source   Source content
- * @param  {Matcher}        matchers Matcher function or object of matchers
- * @return {any}                     Matched value(s), shaped by object
+ * @param {string|Element}                                                source   Source content
+ * @param {O|F}                                                           matchers Matcher function or object of matchers
+ * @return {{ [K in keyof O]: ReturnType<O[K]> }|ReturnType<F>|undefined}          Matched value(s), shaped by object
+ *
+ * @template {any}           T
+ * @template {MatcherFn<T>}  F
+ * @template {MatcherObj<T>} O
  */
 export function parse(source, matchers) {
 	if (!matchers) {
@@ -65,13 +97,26 @@ export function parse(source, matchers) {
 }
 
 /**
+ * @overload
+ * @param {string}              Property name
+ * @return {MatcherFn<string>}      Matcher function returning the property value
+ */
+
+/**
+ * @overload
+ * @param {string|undefined}  selector Optional selector
+ * @param {string}            name     Property name
+ * @return {MatcherFn<string>}         Matcher function returning the property value
+ */
+
+/**
  * Generates a function which matches node of type selector, returning an
  * attribute by property if the attribute exists. If no selector is passed,
  * returns property of the query element.
  *
- * @param  {string=}   selector Optional selector
- * @param  {string=}   name     Property name
- * @return {MatcherFn}          Matcher function returning the property value
+ * @param  {string=}           selector Optional selector
+ * @param  {string=}           name     Property name
+ * @return {MatcherFn<string>}          Matcher function returning the property value
  */
 export function prop(selector, name) {
 	if (1 === arguments.length) {
@@ -93,13 +138,26 @@ export function prop(selector, name) {
 }
 
 /**
+ * @overload
+ * @param {string}             name Attribute name
+ * @return {MatcherFn<string>}      Matcher function returning the attribute value
+ */
+
+/**
+ * @overload
+ * @param {string|undefined}   selector Optional selector
+ * @param {string}             name     Attribute name
+ * @return {MatcherFn<string>}          Matcher function returning the attribute value
+ */
+
+/**
  * Generates a function which matches node of type selector, returning an
  * attribute by name if the attribute exists. If no selector is passed,
  * returns attribute of the query element.
  *
- * @param  {string=}   selector Optional selector
- * @param  {string=}   name     Attribute name
- * @return {MatcherFn}          Matcher function returning the attribute value
+ * @param  {string=}           selector Optional selector
+ * @param  {string=}           name     Attribute name
+ * @return {MatcherFn<string>}          Matcher function returning the attribute value
  */
 export function attr(selector, name) {
 	if (1 === arguments.length) {
@@ -149,9 +207,9 @@ export function text(selector) {
  *
  * @see parse()
  *
- * @param  {string}  selector Selector to match
- * @param  {Matcher} matchers Matcher function or object of matchers
- * @return                    Matcher function which returns an array of matched value(s)
+ * @param  {string}          selector Selector to match
+ * @param  {Matcher<string>} matchers Matcher function or object of matchers
+ * @return                            Matcher function which returns an array of matched value(s)
  */
 export function query(selector, matchers) {
 	/** @type {(node: Element) => any[]} */
