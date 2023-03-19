@@ -37,6 +37,9 @@ const getDocument = (() => {
  */
 
 /**
+ * Given a markup string or DOM element, creates an object aligning with the
+ * shape of the matchers object, or the value returned by the matcher.
+ *
  * @template T
  * @template {MatcherObj<T>} O
  *
@@ -47,6 +50,9 @@ const getDocument = (() => {
  */
 
 /**
+ * Given a markup string or DOM element, creates an object aligning with the
+ * shape of the matchers object, or the value returned by the matcher.
+ *
  * @template {any} T
  * @template {MatcherFn<T>} F
  *
@@ -99,6 +105,10 @@ export function parse(source, matchers) {
 }
 
 /**
+ * Generates a function which matches node of type selector, returning an
+ * attribute by property if the attribute exists. If no selector is passed,
+ * returns property of the query element.
+ *
  * @template T
  *
  * @overload
@@ -107,6 +117,10 @@ export function parse(source, matchers) {
  */
 
 /**
+ * Generates a function which matches node of type selector, returning an
+ * attribute by property if the attribute exists. If no selector is passed,
+ * returns property of the query element.
+ *
  * @template T
  *
  * @overload
@@ -144,12 +158,20 @@ export function prop(selector, name) {
 }
 
 /**
+ * Generates a function which matches node of type selector, returning an
+ * attribute by name if the attribute exists. If no selector is passed,
+ * returns attribute of the query element.
+ *
  * @overload
  * @param {string} name Attribute name
  * @return {MatcherFn<string>} Matcher function returning the attribute value
  */
 
 /**
+ * Generates a function which matches node of type selector, returning an
+ * attribute by name if the attribute exists. If no selector is passed,
+ * returns attribute of the query element.
+ *
  * @overload
  * @param {string|undefined} selector Optional selector
  * @param {string} name Attribute name

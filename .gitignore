@@ -1,4 +1,5 @@
-es/
+/es/*
+!/es/index.d.ts
 node_modules/
 *.log
 dist/
