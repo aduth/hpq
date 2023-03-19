@@ -17,8 +17,6 @@
  * @param {Element|string} source Source content
  * @param {O} matchers Object of matchers
  * @return {{[K in keyof O]: ReturnType<O[K]>}} Matched values, shaped by object
- * @param source
- * @param matchers
  */
 export function parse<T extends unknown, O extends Record<string, MatcherFn<T>>>(
 	source: Element | string,
