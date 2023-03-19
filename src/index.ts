@@ -3,9 +3,17 @@
  */
 import getPath from './get-path';
 
-type MatcherFn<T = any> = (node: Element) => T | undefined;
-type MatcherObj<T = any> = { [key: string]: MatcherFn<T> | MatcherObj<T> };
-type Matcher<T = any> = MatcherFn<T> | MatcherObj<T>;
+export type MatcherFn<T = any> = (node: Element) => T | undefined;
+
+export type MatcherObj = { [key: string]: MatcherFn | MatcherObj };
+
+export type MatcherObjResult<F extends MatcherFn, O extends MatcherObj> = {
+	[K in keyof O]: O[K] extends F
+		? ReturnType<O[K]>
+		: O[K] extends MatcherObj
+		? MatcherObjResult<F, O[K]>
+		: never;
+};
 
 /**
  * Function returning a DOM document created by `createHTMLDocument`. The same
@@ -28,21 +36,56 @@ const getDocument = (() => {
  * Given a markup string or DOM element, creates an object aligning with the
  * shape of the matchers object, or the value returned by the matcher.
  *
- * @param source   Source content
+ * @param source Source content
  * @param matchers Matcher function or object of matchers
- * @return         Matched value(s), shaped by object
  */
-export function parse<F extends MatcherFn<any>, O extends MatcherObj<F> = {}>(
-	source: Element | string,
+export function parse(source: string | Element, matchers?: undefined): undefined;
+
+/**
+ * Given a markup string or DOM element, creates an object aligning with the
+ * shape of the matchers object, or the value returned by the matcher.
+ *
+ * @param source Source content
+ * @param matchers Object of matchers
+ * @return Matched values, shaped by object
+ */
+export function parse<F extends MatcherFn, O extends MatcherObj>(
+	source: string | Element,
 	matchers: O
-): { [K in keyof O]: O[K] extends F ? ReturnType<O[K]> : O[K] };
-export function parse<F extends MatcherFn<any>>(
-	source: Element | string,
-	matchers: F
-): ReturnType<F>;
-export function parse<F extends MatcherFn<any>, O extends MatcherObj<F> = {}>(
-	source: Element | string,
+): MatcherObjResult<F, O>;
+
+/**
+ * Given a markup string or DOM element, creates an object aligning with the
+ * shape of the matchers object, or the value returned by the matcher.
+ *
+ * @param source Source content
+ * @param matcher Matcher function
+ * @return Matched value
+ */
+export function parse<F extends MatcherFn>(source: string | Element, matchers: F): ReturnType<F>;
+
+/**
+ * Given a markup string or DOM element, creates an object aligning with the
+ * shape of the matchers object, or the value returned by the matcher.
+ *
+ * @param source Source content
+ * @param matchers Matcher function or object of matchers
+ */
+export function parse<F extends MatcherFn, O extends MatcherObj>(
+	source: string | Element,
 	matchers: O | F
+): MatcherObjResult<F, O> | ReturnType<F>;
+
+/**
+ * Given a markup string or DOM element, creates an object aligning with the
+ * shape of the matchers object, or the value returned by the matcher.
+ *
+ * @param source Source content
+ * @param matchers Matcher function or object of matchers
+ */
+export function parse<F extends MatcherFn, O extends MatcherObj>(
+	source: string | Element,
+	matchers?: O | F
 ) {
 	if (!matchers) {
 		return;
@@ -56,7 +99,7 @@ export function parse<F extends MatcherFn<any>, O extends MatcherObj<F> = {}>(
 	}
 
 	// Return singular value
-	if ('function' === typeof matchers) {
+	if (typeof matchers === 'function') {
 		return matchers(source);
 	}
 
@@ -66,10 +109,11 @@ export function parse<F extends MatcherFn<any>, O extends MatcherObj<F> = {}>(
 	}
 
 	// Shape result by matcher object
-	return Object.keys(matchers).reduce((memo, key) => {
-		memo[key] = parse(source, matchers[key] as MatcherObj<F>);
+	return Object.keys(matchers).reduce((memo, key: keyof MatcherObjResult<F, O>) => {
+		const inner = matchers[key];
+		memo[key] = parse(source, inner);
 		return memo;
-	}, {} as Record<string, any>);
+	}, {} as MatcherObjResult<F, O>);
 }
 
 /**
@@ -77,13 +121,38 @@ export function parse<F extends MatcherFn<any>, O extends MatcherObj<F> = {}>(
  * attribute by property if the attribute exists. If no selector is passed,
  * returns property of the query element.
  *
- * @param selector Optional selector
- * @param name     Property name
- * @return         Property value
+ * @param name Property name
+ * @return Property value
  */
-export function prop<T = any>(name: string): MatcherFn<T>;
-export function prop<T = any>(selector: string | undefined, name: string): MatcherFn<T>;
-export function prop<T = any>(arg1: string | undefined, arg2?: string): MatcherFn<T> {
+export function prop<N extends keyof Element>(name: string): MatcherFn<Element[N]>;
+
+/**
+ * Generates a function which matches node of type selector, returning an
+ * attribute by property if the attribute exists. If no selector is passed,
+ * returns property of the query element.
+ *
+ * @param selector Optional selector
+ * @param name Property name
+ * @return Property value
+ */
+export function prop<N extends keyof Element>(
+	selector: string | undefined,
+	name: N
+): MatcherFn<Element[N]>;
+
+/**
+ * Generates a function which matches node of type selector, returning an
+ * attribute by property if the attribute exists. If no selector is passed,
+ * returns property of the query element.
+ *
+ * @param selector Optional selector
+ * @param name Property name
+ * @return Property value
+ */
+export function prop<N extends keyof Element>(
+	arg1: string | undefined,
+	arg2?: string
+): MatcherFn<Element[N]> {
 	let name: string;
 	let selector: string | undefined;
 	if (1 === arguments.length) {
@@ -93,15 +162,15 @@ export function prop<T = any>(arg1: string | undefined, arg2?: string): MatcherF
 		name = arg2 as string;
 		selector = arg1;
 	}
-	return function (node: Element) {
+	return function (node: Element): Element[N] | undefined {
 		let match: Element | null = node;
 		if (selector) {
 			match = node.querySelector(selector);
 		}
 		if (match) {
-			return getPath(match, name) as T;
+			return getPath(match, name) as Element[N] | undefined;
 		}
-	};
+	} as MatcherFn<Element[N]>;
 }
 
 /**
@@ -109,13 +178,32 @@ export function prop<T = any>(arg1: string | undefined, arg2?: string): MatcherF
  * attribute by name if the attribute exists. If no selector is passed,
  * returns attribute of the query element.
  *
- * @param selector Optional selector
- * @param name     Attribute name
- * @return         Attribute value
+ * @param name Attribute name
+ * @return Attribute value
  */
-export function attr<T = any>(name: string): MatcherFn<T>;
-export function attr<T = any>(selector: string | undefined, name: string): MatcherFn<T>;
-export function attr<T = any>(arg1: string | undefined, arg2?: string): MatcherFn<T> {
+export function attr(name: string): MatcherFn<string>;
+
+/**
+ * Generates a function which matches node of type selector, returning an
+ * attribute by name if the attribute exists. If no selector is passed,
+ * returns attribute of the query element.
+ *
+ * @param selector Optional selector
+ * @param name Attribute name
+ * @return Attribute value
+ */
+export function attr(selector: string | undefined, name: string): MatcherFn<string>;
+
+/**
+ * Generates a function which matches node of type selector, returning an
+ * attribute by name if the attribute exists. If no selector is passed,
+ * returns attribute of the query element.
+ *
+ * @param selector Optional selector
+ * @param name Attribute name
+ * @return Attribute value
+ */
+export function attr(arg1: string | undefined, arg2?: string): MatcherFn<string> {
 	let name: string;
 	let selector: string | undefined;
 	if (1 === arguments.length) {
@@ -125,10 +213,10 @@ export function attr<T = any>(arg1: string | undefined, arg2?: string): MatcherF
 		name = arg2 as string;
 		selector = arg1;
 	}
-	return function (node: Element): T | undefined {
-		const attributes = prop(selector, 'attributes')(node);
+	return function (node: Element): string | undefined {
+		const attributes = prop(selector, 'attributes')(node) as NamedNodeMap | undefined;
 		if (attributes && Object.prototype.hasOwnProperty.call(attributes, name)) {
-			return attributes[name].value;
+			return attributes[name as any].value;
 		}
 	};
 }
@@ -139,10 +227,10 @@ export function attr<T = any>(arg1: string | undefined, arg2?: string): MatcherF
  * @see prop()
  *
  * @param selector Optional selector
- * @return         Inner HTML
+ * @return Inner HTML
  */
-export function html<T = any>(selector?: string) {
-	return prop<T>(selector, 'innerHTML');
+export function html(selector?: string) {
+	return prop(selector, 'innerHTML') as MatcherFn<string>;
 }
 
 /**
@@ -150,11 +238,11 @@ export function html<T = any>(selector?: string) {
  *
  * @see prop()
  *
- * @param  selector Optional selector
- * @return          Text content
+ * @param selector Optional selector
+ * @return Text content
  */
-export function text<T = any>(selector?: string) {
-	return prop<T>(selector, 'textContent');
+export function text(selector?: string) {
+	return prop(selector, 'textContent') as MatcherFn<string>;
 }
 
 /**
@@ -166,11 +254,14 @@ export function text<T = any>(selector?: string) {
  *
  * @param selector Selector to match
  * @param matchers Matcher function or object of matchers
- * @return         Matcher function which returns an array of matched value(s)
+ * @return Matcher function which returns an array of matched value(s)
  */
-export function query<T = any>(selector: string, matchers: Matcher<T>) {
-	return function (node: Element): any[] {
+export function query<F extends MatcherFn, O extends MatcherObj>(
+	selector: string,
+	matchers?: F | O
+) {
+	return function (node: Element) {
 		const matches = node.querySelectorAll(selector);
-		return [].map.call(matches, (match) => parse<MatcherFn<T>>(match, matchers));
+		return [].map.call(matches, (match) => parse(match, matchers!)) as MatcherObjResult<F, O>[];
 	};
 }

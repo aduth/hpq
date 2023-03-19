@@ -12,10 +12,10 @@ export default [
 		},
 		plugins: [
 			nodeResolve({
-				extensions: ['.js', '.ts'],
+				extensions: ['.ts'],
 			}),
 			babel({
-				extensions: ['.js', '.ts'],
+				extensions: ['.ts'],
 				babelHelpers: 'bundled',
 				exclude: 'node_modules/**',
 				presets: ['@babel/preset-typescript'],
@@ -31,10 +31,10 @@ export default [
 		},
 		plugins: [
 			nodeResolve({
-				extensions: ['.js', '.ts'],
+				extensions: ['.ts'],
 			}),
 			babel({
-				extensions: ['.js', '.ts'],
+				extensions: ['.ts'],
 				babelHelpers: 'bundled',
 				exclude: 'node_modules/**',
 				presets: ['@babel/preset-typescript'],
