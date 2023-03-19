@@ -1,18 +1,12 @@
 {
-	"root": true,
-	"extends": ["eslint:recommended", "prettier"],
-	"plugins": ["prettier"],
-	"parserOptions": {
-		"ecmaVersion": 2020,
-		"sourceType": "module"
-	},
+	"extends": "@aduth/eslint-config",
 	"env": {
-		"es6": true,
 		"browser": true,
 		"mocha": true,
 		"node": true
 	},
 	"rules": {
-		"prettier/prettier": "error"
+		"no-redeclare": "off",
+		"@typescript-eslint/no-redeclare": "error"
 	}
 }

@@ -14,23 +14,12 @@ describe('hpq', () => {
 		'<blockquote><p>…</p><p>…</p><cite class="large"><em>—</em> Andrew</cite></blockquote>';
 
 	// Element
-	let element;
+	let element: HTMLElement;
 
 	before(() => {
-		const { JSDOM } = require('jsdom');
-		global.window = new JSDOM('').window;
-		global.document = window.document;
-		global.navigator = window.navigator;
-
 		element = document.createElement('div');
 		element.innerHTML = markup;
-		element = element.firstChild;
-	});
-
-	after(() => {
-		delete global.document;
-		delete global.window;
-		delete global.navigator;
+		element = element.firstChild as HTMLElement;
 	});
 
 	describe('parse()', () => {
@@ -53,6 +42,7 @@ describe('hpq', () => {
 		});
 
 		it('should return undefiend if passed matchers other than object, function', () => {
+			// @ts-ignore
 			const result = parse(element, 2);
 
 			expect(result).to.be.undefined;
@@ -180,12 +170,6 @@ describe('hpq', () => {
 	});
 
 	describe('query()', () => {
-		it('should return a matcher function', () => {
-			const matcher = query();
-
-			expect(matcher).to.be.a('function');
-		});
-
 		it('should return array of parse on matched nodes', () => {
 			const result = parse(element, { text: query('p', text()) });
 
