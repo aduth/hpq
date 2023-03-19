@@ -3,9 +3,9 @@
  */
 import getPath from './get-path';
 
-type MatcherFn<T = any> = (node: Element) => T;
-type MatcherObj = Record<string, MatcherFn>;
-type Matcher = MatcherFn | MatcherObj;
+type MatcherFn<T = any> = (node: Element) => T | undefined;
+type MatcherObj<T = any> = { [key: string]: MatcherFn<T> | MatcherObj<T> };
+type Matcher<T = any> = MatcherFn<T> | MatcherObj<T>;
 
 /**
  * Function returning a DOM document created by `createHTMLDocument`. The same
@@ -32,7 +32,18 @@ const getDocument = (() => {
  * @param matchers Matcher function or object of matchers
  * @return         Matched value(s), shaped by object
  */
-export function parse(source: string | Element, matchers: Matcher): any {
+export function parse<F extends MatcherFn<any>, O extends MatcherObj<F> = {}>(
+	source: Element | string,
+	matchers: O
+): { [K in keyof O]: O[K] extends F ? ReturnType<O[K]> : O[K] };
+export function parse<F extends MatcherFn<any>>(
+	source: Element | string,
+	matchers: F
+): ReturnType<F>;
+export function parse<F extends MatcherFn<any>, O extends MatcherObj<F> = {}>(
+	source: Element | string,
+	matchers: O | F
+) {
 	if (!matchers) {
 		return;
 	}
@@ -56,7 +67,7 @@ export function parse(source: string | Element, matchers: Matcher): any {
 
 	// Shape result by matcher object
 	return Object.keys(matchers).reduce((memo, key) => {
-		memo[key] = parse(source, matchers[key]);
+		memo[key] = parse(source, matchers[key] as MatcherObj<F>);
 		return memo;
 	}, {} as Record<string, any>);
 }
@@ -70,9 +81,9 @@ export function parse(source: string | Element, matchers: Matcher): any {
  * @param name     Property name
  * @return         Property value
  */
-export function prop(name: string): MatcherFn;
-export function prop(selector: string | undefined, name: string): MatcherFn;
-export function prop(arg1: string | undefined, arg2?: string): MatcherFn {
+export function prop<T = any>(name: string): MatcherFn<T>;
+export function prop<T = any>(selector: string | undefined, name: string): MatcherFn<T>;
+export function prop<T = any>(arg1: string | undefined, arg2?: string): MatcherFn<T> {
 	let name: string;
 	let selector: string | undefined;
 	if (1 === arguments.length) {
@@ -88,7 +99,7 @@ export function prop(arg1: string | undefined, arg2?: string): MatcherFn {
 			match = node.querySelector(selector);
 		}
 		if (match) {
-			return getPath(match, name);
+			return getPath(match, name) as T;
 		}
 	};
 }
@@ -102,9 +113,9 @@ export function prop(arg1: string | undefined, arg2?: string): MatcherFn {
  * @param name     Attribute name
  * @return         Attribute value
  */
-export function attr(name: string): MatcherFn;
-export function attr(selector: string | undefined, name: string): MatcherFn;
-export function attr(arg1: string | undefined, arg2?: string): MatcherFn {
+export function attr<T = any>(name: string): MatcherFn<T>;
+export function attr<T = any>(selector: string | undefined, name: string): MatcherFn<T>;
+export function attr<T = any>(arg1: string | undefined, arg2?: string): MatcherFn<T> {
 	let name: string;
 	let selector: string | undefined;
 	if (1 === arguments.length) {
@@ -114,7 +125,7 @@ export function attr(arg1: string | undefined, arg2?: string): MatcherFn {
 		name = arg2 as string;
 		selector = arg1;
 	}
-	return function (node: Element): unknown {
+	return function (node: Element): T | undefined {
 		const attributes = prop(selector, 'attributes')(node);
 		if (attributes && Object.prototype.hasOwnProperty.call(attributes, name)) {
 			return attributes[name].value;
@@ -130,8 +141,8 @@ export function attr(arg1: string | undefined, arg2?: string): MatcherFn {
  * @param selector Optional selector
  * @return         Inner HTML
  */
-export function html(selector?: string) {
-	return prop(selector, 'innerHTML');
+export function html<T = any>(selector?: string) {
+	return prop<T>(selector, 'innerHTML');
 }
 
 /**
@@ -142,8 +153,8 @@ export function html(selector?: string) {
  * @param  selector Optional selector
  * @return          Text content
  */
-export function text(selector?: string) {
-	return prop(selector, 'textContent');
+export function text<T = any>(selector?: string) {
+	return prop<T>(selector, 'textContent');
 }
 
 /**
@@ -157,9 +168,9 @@ export function text(selector?: string) {
  * @param matchers Matcher function or object of matchers
  * @return         Matcher function which returns an array of matched value(s)
  */
-export function query(selector: string, matchers: Matcher) {
+export function query<T = any>(selector: string, matchers: Matcher<T>) {
 	return function (node: Element): any[] {
 		const matches = node.querySelectorAll(selector);
-		return [].map.call(matches, (match) => parse(match, matchers));
+		return [].map.call(matches, (match) => parse<MatcherFn<T>>(match, matchers));
 	};
 }
