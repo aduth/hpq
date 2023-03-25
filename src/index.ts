@@ -168,7 +168,7 @@ export function prop<N extends keyof Element>(
 			match = node.querySelector(selector);
 		}
 		if (match) {
-			return getPath(match, name) as Element[N] | undefined;
+			return getPath(match, name);
 		}
 	} as MatcherFn<Element[N]>;
 }

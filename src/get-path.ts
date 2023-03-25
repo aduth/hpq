@@ -6,10 +6,7 @@
  * @param path   Path to resolve
  * @return       Resolved value
  */
-export default function getPath(
-	object: Record<string, any>,
-	path: string
-): Record<string, any> | undefined {
+export default function getPath(object: Record<string, any>, path: string): any | undefined {
 	const segments = path.split('.');
 
 	let segment;

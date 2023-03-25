@@ -1,4 +1,4 @@
-/es/*
+es/
 node_modules/
 *.log
 dist/
