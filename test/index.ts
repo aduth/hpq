@@ -51,10 +51,12 @@ describe('hpq', () => {
 		it('should return parsed matches in shape of matcher object', () => {
 			const result = parse(element, {
 				author: text('cite'),
+				deep: { value: text('cite') },
 			});
 
 			expect(result).to.eql({
 				author: '— Andrew',
+				deep: { value: '— Andrew' },
 			});
 		});
 	});
