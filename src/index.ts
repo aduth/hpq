@@ -5,7 +5,7 @@ import getPath from './get-path';
 
 export type MatcherFn<T = any> = (node: Element) => T | undefined;
 
-export type MatcherObj = { [key: string]: MatcherFn | MatcherObj };
+export type MatcherObj = { [key: string]: MatcherObj | MatcherFn };
 
 export type MatcherObjResult<F extends MatcherFn, O extends MatcherObj> = {
 	[K in keyof O]: O[K] extends F
@@ -214,7 +214,7 @@ export function attr(arg1: string | undefined, arg2?: string): MatcherFn<string>
 		selector = arg1;
 	}
 	return function (node: Element): string | undefined {
-		const attributes = prop(selector, 'attributes')(node) as NamedNodeMap | undefined;
+		const attributes = prop(selector, 'attributes')(node);
 		if (attributes && Object.prototype.hasOwnProperty.call(attributes, name)) {
 			return attributes[name as any].value;
 		}
@@ -259,7 +259,7 @@ export function text(selector?: string) {
 export function query<F extends MatcherFn, O extends MatcherObj>(
 	selector: string,
 	matchers?: F | O
-) {
+): MatcherFn<MatcherObjResult<F, O>[]> {
 	return function (node: Element) {
 		const matches = node.querySelectorAll(selector);
 		return [].map.call(matches, (match) => parse(match, matchers!)) as MatcherObjResult<F, O>[];
