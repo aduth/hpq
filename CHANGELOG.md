@@ -1,3 +1,7 @@
+## 1.4.0 (2023-03-25)
+
+- Improvement: Add TypeScript type definitions ([#18](https://github.com/aduth/hpq/pull/18), thanks @johnhooks!)
+
 ## 1.3.0 (2018-10-31)
 
 - Improvement: Improves performance of markup string parsing by ~4x.
